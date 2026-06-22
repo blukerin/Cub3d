@@ -4,8 +4,8 @@ BONUS_NAME = cub3D_bonus
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-MLX_DIR = minilibx-linux
-LIBFT_DIR = libft
+MLX_DIR = mlx
+LIBFT_DIR = includes/libft
 BONUS_DIR = bonus
 
 MLX_LIB = $(MLX_DIR)/libmlx.a
@@ -14,7 +14,9 @@ MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lbsd
 LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 INCLUDES = -I. -I$(MLX_DIR) -I$(LIBFT_DIR)
 
-SRC = main.c
+SRC = src/main.c\
+	src/parser.c
+
 OBJ = $(SRC:.c=.o)
 
 BONUS_SRC = $(BONUS_DIR)/main_bonus.c\

@@ -10,34 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "cub3D.h"
-
-typedef struct s_2D_map
-{
-	void	*img_ptr;
-	char	*addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
-}			t_2D_map;
-
-typedef struct s_game
-{
-	void		*mlx;
-	void		*window;
-	t_2D_map	*map_2D;
-}	t_game;
-
-
-
+#include "../includes/cub3D.h"
 
 void pixel_put_image(char *addr, int x, int y, int size_line, int bpp, int color)
 {
     char *dst = addr + (y * size_line + x * (bpp / 8));
     *(unsigned int *)dst = color;
 }
-
 
 void draw_2D_map(t_game *game)
 {
@@ -52,7 +31,6 @@ void draw_2D_map(t_game *game)
 				color = 0x000467;
 			else
 				color = 0x048950;
-			// Dibuja un cuadrado de 50x50 píxeles en esa posición
         	for (int py = 0; py < 100; py++)
             	for (int px = 0; px < 100; px++)
                 	pixel_put_image(game->map_2D->addr, x*100+px, y*100+py, game->map_2D->line_len, game->map_2D->bpp, color);
@@ -72,14 +50,16 @@ int exit_game(t_game *game)
 
 int handle_keypress(int keycode, t_game *game)
 {
-	if (keycode == 65307) // Escape key
+	if (keycode == 65307)
 		exit_game(game);
 	return (0);
 }
 
-int main() 
+int main(int argc, char *argv[]) 
 {
 	t_game game;
+
+	parser(argc, argv, &game);
 	game.map_2D = malloc(sizeof(t_2D_map));
 	game.mlx = mlx_init();
 	game.window = mlx_new_window(game.mlx, 600, 600, "cub3D");

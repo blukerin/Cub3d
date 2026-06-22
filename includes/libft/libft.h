@@ -16,6 +16,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
 typedef struct s_list
 {
 	void			*content;
@@ -71,5 +75,9 @@ double	ft_atof(const char *nptr);
 long	ft_atol(const char *nptr);
 int		ft_max(int num_1, int num_2);
 int		ft_min(int num_1, int num_2);
+char	*ft_strdup_gnl(char *s);
+char	*ft_divide_gnl(char *buffer);
+int		strlen_gnl(char *str);
+char	*get_next_line(int fd);
 
 #endif

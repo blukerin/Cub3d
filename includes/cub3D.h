@@ -17,9 +17,37 @@
 # include <unistd.h>
 # include <math.h>
 # include <stdlib.h>
-# include "./minilibx-linux/mlx.h"
+# include "../mlx/mlx.h"
 # include "libft/libft.h"
 # include <sys/time.h>
+# include <fcntl.h>
+
+typedef struct s_2D_map
+{
+	void	*img_ptr;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_2D_map;
+
+typedef struct s_textures
+{
+	char	*w_texture;
+	char	*e_texture;
+	char	*n_texture;
+	char	*s_texture;
+	int		floor_colour;
+	int		ceiling_colour;
+}	t_textures;
+
+typedef struct s_game
+{
+	void		*mlx;
+	void		*window;
+	t_2D_map	*map_2D;
+	t_textures	*textures;
+}	t_game;
 
 char MAP[6][6] = {
 	{'1','1','1','1','1','1'},
@@ -30,6 +58,6 @@ char MAP[6][6] = {
 	{'1','1','1','1','1','1'}
 };
 
-
+int	parser(int argc, char **argv, t_game *game);
 
 #endif
