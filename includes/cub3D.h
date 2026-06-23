@@ -12,6 +12,12 @@
 
 #ifndef CUB3D_H
 # define CUB3D_H
+# define W 119     
+# define A 97     
+# define S 115     
+# define D 100 
+# define ESC 65307
+
 
 # include <stdio.h>
 # include <unistd.h>
@@ -41,12 +47,19 @@ typedef struct s_textures
 	int		ceiling_colour;
 }	t_textures;
 
+typedef struct s_player
+{
+	int delta_x;
+	int delta_y;
+}	t_player;
+
 typedef struct s_game
 {
 	void		*mlx;
 	void		*window;
 	t_2D_map	*map_2D;
 	t_textures	*textures;
+	t_player	player;
 }	t_game;
 
 char MAP[6][6] = {
