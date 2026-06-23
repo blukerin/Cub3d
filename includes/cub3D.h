@@ -57,6 +57,8 @@ typedef struct s_game
 {
 	void		*mlx;
 	void		*window;
+	int			*file_d;
+	char		**map;
 	t_2D_map	*map_2D;
 	t_textures	*textures;
 	t_player	player;
