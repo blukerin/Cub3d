@@ -12,20 +12,28 @@
 
 #include "../../includes/cub3D.h"
 
-void	get_texture(t_game *game, char *line, int n, int *count)
+void    error_during_parse(t_game *game, int msg)
 {
-	int m;
-
-	m = count_spaces(line, 2);
-	if (n == 1 && !game->textures->n_texture)
-		game->textures->n_texture = ft_strdup(line + m);
-	else if (n == 2 && !game->textures->s_texture)
-		game->textures->s_texture = ft_strdup(line + m);
-	else if (n == 3 && !game->textures->e_texture)
-		game->textures->e_texture = ft_strdup(line + m);
-	else if (n == 4 && !game->textures->w_texture)
-		game->textures->w_texture = ft_strdup(line + m);
-	else
-		error_during_parse(game, 2);
-	(*count)++;
+    if (game->textures->e_texture)
+        free(game->textures->e_texture);
+    if (game->textures->n_texture)
+        free(game->textures->n_texture);
+    if (game->textures->s_texture)
+        free(game->textures->s_texture);
+    if (game->textures->w_texture)
+        free(game->textures->w_texture);
+    //if (game->map)
+        //free_matrix(game);
+    close(*(game->file_d));
+    if (msg == 1)
+        ft_putstr_fd("Error\nIncorrect file format\n", STDERR_FILENO);
+    else if (msg == 2)
+        ft_putstr_fd("Error\nDuplicate element in file\n", STDERR_FILENO);
+    else if (msg == 3)
+        ft_putstr_fd("Error\nMemory allocation memory\n", STDERR_FILENO);
+    else if (msg == 4)
+        ft_putstr_fd("Error\nWrong format in colours\n", STDERR_FILENO);
+    else if (msg == 5)
+        ft_putstr_fd("Error\nRGB colours out of range\n", STDERR_FILENO);
+    exit(1);
 }

@@ -12,6 +12,15 @@
 
 #include "../includes/cub3D.h"
 
+char MAP_GRID[6][6] = {
+	{'1','1','1','1','1','1'},
+	{'1','0','0','0','0','1'},
+	{'1','0','1','0','0','1'},
+	{'1','0','0','N','0','1'},
+	{'1','0','0','0','0','1'},
+	{'1','1','1','1','1','1'}
+};
+
 void pixel_put_image(char *addr, int x, int y, int size_line, int bpp, int color)
 {
     char *dst = addr + (y * size_line + x * (bpp / 8));
@@ -31,9 +40,9 @@ void draw_2D_map(t_game *game, int delta_x, int delta_y)
 		x = 0;
 		while (x < 6)
 		{
-			if (MAP[y][x] == '0') 
+			if (MAP_GRID[y][x] == '0') 
 				color = 0xFFFFFF;
-			else if (MAP[y][x] == '1')
+			else if (MAP_GRID[y][x] == '1')
 				color = 0x000467;
 			else
 				color = 0x048950;

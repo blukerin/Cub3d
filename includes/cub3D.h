@@ -27,6 +27,7 @@
 # include "libft/libft.h"
 # include <sys/time.h>
 # include <fcntl.h>
+# include <errno.h>
 
 typedef struct s_2D_map
 {
@@ -39,12 +40,12 @@ typedef struct s_2D_map
 
 typedef struct s_textures
 {
-	char	*w_texture;
-	char	*e_texture;
-	char	*n_texture;
-	char	*s_texture;
-	int		floor_colour;
-	int		ceiling_colour;
+	char			*w_texture;
+	char			*e_texture;
+	char			*n_texture;
+	char			*s_texture;
+	unsigned int	floor_colour;
+	unsigned int	ceiling_colour;
 }	t_textures;
 
 typedef struct s_player
@@ -64,15 +65,13 @@ typedef struct s_game
 	t_player	player;
 }	t_game;
 
-char MAP[6][6] = {
-	{'1','1','1','1','1','1'},
-	{'1','0','0','0','0','1'},
-	{'1','0','1','0','0','1'},
-	{'1','0','0','N','0','1'},
-	{'1','0','0','0','0','1'},
-	{'1','1','1','1','1','1'}
-};
+
 
 int	parser(int argc, char **argv, t_game *game);
+void	get_colour(t_game *game, char *line, int n, int *count);
+void	get_texture(t_game *game, char *line, int n, int *count);
+void    line_to_map(t_game *game, char *line);
+void    error_during_parse(t_game *game, int msg);
+int 	count_spaces(const char *line, int i);
 
 #endif

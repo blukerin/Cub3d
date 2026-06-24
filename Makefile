@@ -15,7 +15,12 @@ LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 INCLUDES = -I. -I$(MLX_DIR) -I$(LIBFT_DIR)
 
 SRC = src/main.c\
-	# src/parser/parser.c
+	src/parser/parser.c\
+	src/parser/get_textures.c\
+	src/parser/get_colours.c\
+	src/parser/error_handler.c\
+	src/parser/create_map.c\
+	src/parser/utils_parser.c
 
 OBJ = $(SRC:.c=.o)
 
