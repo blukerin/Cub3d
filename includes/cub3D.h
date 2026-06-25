@@ -58,24 +58,32 @@ typedef struct s_player
 	double	angle;
 }	t_player;
 
+typedef struct s_map
+{
+	int		width;
+	int		height;
+	char	**grid;
+}	t_map;
+
 typedef struct s_game
 {
 	void		*mlx;
 	void		*window;
 	int			*file_d;
-	char		**map;
+	t_map		*map;
 	t_2D_map	*map_2D;
 	t_textures	*textures;
 	t_player	player;
 }	t_game;
 
-
-
-int	parser(int argc, char **argv, t_game *game);
+// Parser
+int		parser(int argc, char **argv, t_game *game);
 void	get_colour(t_game *game, char *line, int n, int *count);
 void	get_texture(t_game *game, char *line, int n, int *count);
 void    line_to_map(t_game *game, char *line);
 void    error_during_parse(t_game *game, int msg);
 int 	count_spaces(const char *line, int i);
+int		is_not_empty(const char *str);
+int		parse_map(t_game *game);
 
 #endif

@@ -37,38 +37,30 @@ static int	check_line(t_game *game, char *line, int *count)
 	return (1);
 }
 
-static int	is_not_empty(const char *str)
+static int	parse_cub(t_game *game, char *file)
 {
-	int	i;
-
-	i = 0;
-	while(str[i] == ' ' || str[i] == 9)
-		i++;
-	if (str[i] == '\0' || str[i] == '\n')
-		return (0);
-	return (1);
-}
-
-static int	parse_cub(t_game *game, int *fd)
-{
+	int		fd;
 	int		count;
 	char	*line;
 
 	count = 0;
-	line = get_next_line(*fd);
-	game->file_d = fd;
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_putstr_fd("Error\nOpening file failed\n", STDERR_FILENO);
+		return (0);
+	}
+	line = get_next_line(fd);
+	game->file_d = &fd;
 	while(line != NULL)
 	{
 		if (is_not_empty(line))
 			check_line(game, line, &count);
 		free(line);
-		line = get_next_line(*fd);
-	}/*
-	if (!check_map(game->map))
-	{
-		error_in_map(game);
-		return (0);
-	}*/
+		line = get_next_line(fd);
+	}
+	close(fd);
+	game->file_d = NULL;
 	return (1);
 }
 
@@ -80,27 +72,42 @@ static void	init(t_game *game)
 	game->textures->s_texture = NULL;
 	game->textures->e_texture = NULL;
 	game->textures->w_texture = NULL;
-	game->map = NULL;
+	game->map->grid = NULL;
+}
+
+static int	file_has_correct_extension(char *str)
+{
+	int	l;
+	
+	l = ft_strlen(str);
+	if (l < 5)
+		return (0);
+	if (str[l - 1] != 'b')
+		return (0);
+	else if (str[l - 2] != 'u')
+		return (0);
+	else if (str[l - 3] != 'c')
+		return (0);
+	else if (str[l - 4] != '.')
+		return (0);
+	return (1);
 }
 
 int parser(const int argc, char **argv, t_game *game)
 {
-	int	fd;
-
 	if (argc != 2)
 	{
 		ft_putstr_fd("Error\nIncorrect number of arguments\n", STDERR_FILENO);
 		exit (1);
 	}
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
+	if (!file_has_correct_extension(argv[1]))
 	{
-		ft_putstr_fd("Error\nOpening file failed\n", STDERR_FILENO);
+		ft_putstr_fd("Error\nFile has incorrect extension\n", STDERR_FILENO);
 		exit (1);
 	}
 	init(game);
-	if (!parse_cub(game, &fd))
+	if (!parse_cub(game, argv[1]))
 		exit (1);
-	close(fd);
+	parse_map(game);
 	return (1);
 }

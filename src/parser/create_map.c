@@ -23,9 +23,9 @@ static void	add_new_line(t_game *game, char *line, int i)
         error_during_parse(game, 3);
     }
     i = 0;
-    while (game->map[i] != NULL)
+    while (game->map->grid[i] != NULL)
     {
-        ptr[i] = game->map[i];
+        ptr[i] = game->map->grid[i];
         i++;
     }
     ptr[i] = ft_strdup(line);
@@ -35,38 +35,39 @@ static void	add_new_line(t_game *game, char *line, int i)
         error_during_parse(game, 3);
     }
     ptr[i + 1] = NULL;
-    free(game->map);
-    game->map = ptr;
+    free(game->map->grid);
+    game->map->grid = ptr;
 }
 
 static void	empty_map(t_game *game, char *line)
 {
-    game->map = (char **)malloc(sizeof(char *) * 2);
-    if (!game->map)
+    game->map->grid = (char **)malloc(sizeof(char *) * 2);
+    if (!game->map->grid)
     {
         free(line);
         error_during_parse(game, 3);
     }
-    game->map[0] = ft_strdup(line);
-    if (!game->map[0])
+    game->map->grid[0] = ft_strdup(line);
+    if (!game->map->grid[0])
     {
         free(line);
         error_during_parse(game, 3);
     }
-    game->map[1] = NULL;
+    game->map->grid[1] = NULL;
 }
 
 void    line_to_map(t_game *game, char *line)
 {
     int     i;
 
-    if (!game->map)
+    if (!game->map->grid)
     {
         empty_map(game, line);
         return ;
     }
     i = 0;
-    while (game->map[i] != NULL)
+    while (game->map->grid[i] != NULL)
         i++;
     add_new_line(game, line, i);
+    game->map->height = i + 1;
 }

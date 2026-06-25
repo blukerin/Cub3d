@@ -53,8 +53,8 @@ static int	is_not_numeric(const char *line, int i)
     while (line[i] == ' ' || line[i] == 9)
 		i++;
 	if (line[i] != '\0' && line[i] != '\n')
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 static void	get_rgb(t_game *game, unsigned int *c, char *line)

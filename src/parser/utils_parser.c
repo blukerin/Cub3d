@@ -12,6 +12,18 @@
 
 #include "../../includes/cub3D.h"
 
+int	is_not_empty(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while(str[i] == ' ' || str[i] == 9)
+		i++;
+	if (str[i] == '\0' || str[i] == '\n')
+		return (0);
+	return (1);
+}
+
 int 	count_spaces(const char *line, int i)
 {
 	while(line[i] == ' ' || line[i] == 9)

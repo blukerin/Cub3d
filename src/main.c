@@ -212,15 +212,19 @@ int handle_keypress(int keycode, t_game *game)
 	return (0);
 }
 
-int main() // poner argc y argv al terminar y descomentar el makefile
+int main(int argc, char *argv[])
 {
 	t_game game;
-
+	
+	game.textures = malloc(sizeof(t_textures));
+	game.map = malloc(sizeof(t_map));
+	if (!game.textures || !game.map)
+		return (1);
+	parser(argc, argv, &game);
 	game.player.delta_x = 0;
 	game.player.delta_y = 0;
 	game.player.angle = -M_PI / 2;
 
-	//parser(argc, argv, &game);
 	game.map_2D = malloc(sizeof(t_2D_map));
 	game.mlx = mlx_init();
 	game.window = mlx_new_window(game.mlx, 600, 600, "cub3D");

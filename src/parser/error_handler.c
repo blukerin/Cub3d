@@ -25,15 +25,23 @@ void    error_during_parse(t_game *game, int msg)
     //if (game->map)
         //free_matrix(game);
     close(*(game->file_d));
+    free(game->map);
+    free(game->textures);
     if (msg == 1)
         ft_putstr_fd("Error\nIncorrect file format\n", STDERR_FILENO);
     else if (msg == 2)
         ft_putstr_fd("Error\nDuplicate element in file\n", STDERR_FILENO);
     else if (msg == 3)
-        ft_putstr_fd("Error\nMemory allocation memory\n", STDERR_FILENO);
+        ft_putstr_fd("Error\nMemory allocation failed\n", STDERR_FILENO);
     else if (msg == 4)
         ft_putstr_fd("Error\nWrong format in colours\n", STDERR_FILENO);
     else if (msg == 5)
         ft_putstr_fd("Error\nRGB colours out of range\n", STDERR_FILENO);
-    exit(1);
+    else if (msg == 6)
+        ft_putstr_fd("Error\nWrong character inside map\n", STDERR_FILENO);
+    else if (msg == 7)
+        ft_putstr_fd("Error\nMap is not closed\n",STDERR_FILENO);
+    else if (msg == 8)
+        ft_putstr_fd("Error\nMap can only contain one player\n", STDERR_FILENO);
+    exit (1);
 }
