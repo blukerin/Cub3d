@@ -17,7 +17,10 @@
 # define S 115     
 # define D 100 
 # define ESC 65307
-
+# define LEFT 65361
+# define RIGHT 65363
+# define FOV (60 * M_PI / 180) 
+# define WIDTH 600
 
 # include <stdio.h>
 # include <unistd.h>
@@ -52,6 +55,7 @@ typedef struct s_player
 {
 	int delta_x;
 	int delta_y;
+	double	angle;
 }	t_player;
 
 typedef struct s_game
