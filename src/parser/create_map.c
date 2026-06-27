@@ -16,7 +16,7 @@ static void	add_new_line(t_game *game, char *line, int i)
 {
 	char	**ptr;
 
-	ptr = (char **)malloc(sizeof(char *) * (i + 1));
+	ptr = ft_calloc(sizeof(char *), i + 2);
     if (!ptr)
     {
         free(line);
@@ -34,7 +34,6 @@ static void	add_new_line(t_game *game, char *line, int i)
         free(line);
         error_during_parse(game, 3);
     }
-    ptr[i + 1] = NULL;
     free(game->map->grid);
     game->map->grid = ptr;
 }

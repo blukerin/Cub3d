@@ -12,6 +12,25 @@
 
 #include "../../includes/cub3D.h"
 
+int	ft_isspace(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r' || c == '\n');
+}
+
+void	free_matrix(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
 int	is_not_empty(const char *str)
 {
 	int	i;

@@ -65,13 +65,13 @@ static void	get_rgb(t_game *game, unsigned int *c, char *line)
 	colours = ft_split(line, ',');
 	if (!size_of_split(colours))
 	{
-		//free_matrix(colours);
+		free_matrix(colours);
 		error_during_parse(game, 4);
 	}
 	rgb[0] = ft_atoi(colours[0]);
 	rgb[1] = ft_atoi(colours[1]);
 	rgb[2] = ft_atoi(colours[2]);
-	//free_matrix(colours);
+	free_matrix(colours);
 	if (numbers_not_in_range(rgb))
 	{
 		free(line);

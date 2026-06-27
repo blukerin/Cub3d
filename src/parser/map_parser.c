@@ -76,16 +76,16 @@ static int	is_incorrect_character(char c, int *player)
 		(*player)++;
 		return (0);
 	}
-	else if (c == '1' || c == '0' || c == ' ')
+	if (c == '1' || c == '0' || ft_isspace(c))
 		return (0);
 	return (1);
 }
 
 static int	is_inside_character(char c)
 {
-	if (c == 'W' || c == 'N' || c == 'S' || c == 'E' || c == '0')
-		return (1);
-	return (0);
+	if (ft_isspace(c) || c == '1')
+		return (0);
+	return (1);
 }
 
 static int	map_not_closed(char **line, int i, int j, t_game *game)
@@ -93,13 +93,21 @@ static int	map_not_closed(char **line, int i, int j, t_game *game)
 	if (!is_inside_character(line[i][j]))
 		return (0);	
 	if (i == game->map->height - 1|| i == 0)
+	{
 		return (1);
+	}
 	else if (j == game->map->width - 1 || j == 0)
+	{
 		return (1);
-	if (line[i - 1][j] == ' ' || line[i + 1][j] == ' ')
+	}
+	if (ft_isspace(line[i - 1][j]) || ft_isspace(line[i + 1][j]))
+	{
 		return (1);
-	else if (line[i][j - 1] == ' ' || line[i][j + 1] == ' ')
+	}	
+	else if (ft_isspace(line[i][j - 1]) || ft_isspace(line[i][j + 1]))
+	{
 		return (1);
+	}
 	return (0);
 }
 
@@ -109,20 +117,18 @@ int	parse_map(t_game *game)
 	int		i;
 	int		j;
 	int		player;
-	char	**ptr;
 
 	padding(game);
 	i = 0;
-	ptr = game->map->grid;
 	player = 0;
-	while (ptr[i])
+	while (game->map->grid[i])
 	{
 		j = 0;
-		while (ptr[i][j])
+		while (game->map->grid[i][j])
 		{
-			if (is_incorrect_character(ptr[i][j], &player))
+			if (is_incorrect_character(game->map->grid[i][j], &player))
 				error_during_parse(game, 6);
-			if (map_not_closed(ptr, i, j, game))
+			if (map_not_closed(game->map->grid, i, j, game))
 				error_during_parse(game, 7);
 			j++;
 		}

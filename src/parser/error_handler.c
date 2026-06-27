@@ -14,17 +14,18 @@
 
 void    error_during_parse(t_game *game, int msg)
 {
-    if (game->textures->e_texture)
+    if (game->textures->e_texture != NULL)
         free(game->textures->e_texture);
-    if (game->textures->n_texture)
+    if (game->textures->n_texture != NULL)
         free(game->textures->n_texture);
-    if (game->textures->s_texture)
+    if (game->textures->s_texture != NULL)
         free(game->textures->s_texture);
-    if (game->textures->w_texture)
+    if (game->textures->w_texture != NULL)
         free(game->textures->w_texture);
-    //if (game->map)
-        //free_matrix(game);
-    close(*(game->file_d));
+    if (game->map->grid != NULL)
+        free_matrix(game->map->grid);
+    if (game->file_d != NULL)
+        close(*(game->file_d));
     free(game->map);
     free(game->textures);
     if (msg == 1)

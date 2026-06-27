@@ -85,5 +85,6 @@ void    error_during_parse(t_game *game, int msg);
 int 	count_spaces(const char *line, int i);
 int		is_not_empty(const char *str);
 int		parse_map(t_game *game);
-
+void	free_matrix(char **arr);
+int		ft_isspace(char c);
 #endif
