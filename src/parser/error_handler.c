@@ -30,6 +30,8 @@ static void	print_err_msg(int msg)
 		ft_putstr_fd("Error\nMap is not closed\n", STDERR_FILENO);
 	else if (msg == 8)
 		ft_putstr_fd("Error\nMap can only contain one player\n", STDERR_FILENO);
+	else if (msg == 9)
+		ft_putstr_fd("Error\nIncorrect path to texture\n", STDERR_FILENO);
 }
 
 static void	end_file(t_game *game)
