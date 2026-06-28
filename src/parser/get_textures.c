@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
-
+/*
 static int	is_not_valid_path(char *line)
 {
 	int		fd;
@@ -32,17 +32,17 @@ static int	is_not_valid_path(char *line)
 	close(fd);
 	return (0);
 }
-
+*/
 void	get_texture(t_game *game, char *line, int n, int *count)
 {
 	int	m;
 
 	m = count_spaces(line, 2);
-	if (is_not_valid_path(line + m))
+	/*if (is_not_valid_path(line + m))
 	{
 		free(line);
 		error_during_parse(game, 9);
-	}
+	}*/
 	if (n == 1 && !game->textures->n_texture)
 		game->textures->n_texture = ft_strdup(line + m);
 	else if (n == 2 && !game->textures->s_texture)

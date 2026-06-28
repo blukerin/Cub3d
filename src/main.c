@@ -39,8 +39,8 @@ void    draw_ray(t_game *game, int cx, int cy, double ray_angle)
     while (x >= 0 && x < max_x && y >= 0 && y < max_y
         && game->map->grid[y / 100][x / 100] != '1')
     {
-        pixel_put_image(game->map_2D->addr, x, y,
-            game->map_2D->line_len, game->map_2D->bpp, 0xFF0000);
+        pixel_put_image(game->map_2d->addr, x, y,
+            game->map_2d->line_len, game->map_2d->bpp, 0xFF0000);
         x = cx + (int)(dx * i);
         y = cy + (int)(dy * i);
         i++;
@@ -94,8 +94,8 @@ void draw_2D_map(t_game *game)
                     px = 0;
                     while (px < 95)
                     {
-                        pixel_put_image(game->map_2D->addr, x * 100 + px, y * 100 + py, 
-                            game->map_2D->line_len, game->map_2D->bpp, color);
+                        pixel_put_image(game->map_2d->addr, x * 100 + px, y * 100 + py, 
+                            game->map_2d->line_len, game->map_2d->bpp, color);
                         px++;
                     }
                     py++;
@@ -131,11 +131,11 @@ void draw_pj(t_game *game)
                     px = 0;
                     while (px < 20)
                     {
-                        pixel_put_image(game->map_2D->addr,
+                        pixel_put_image(game->map_2d->addr,
                             x * 100 + px + game->player.delta_x,
                             y * 100 + py + game->player.delta_y,
-                            game->map_2D->line_len,
-                            game->map_2D->bpp, color);
+                            game->map_2d->line_len,
+                            game->map_2d->bpp, color);
                         px++;
                     }
                     py++;
@@ -183,17 +183,7 @@ void    render(t_game *game)
     get_player_center(game, &cx, &cy);
     cast_rays(game, cx, cy);
     mlx_put_image_to_window(game->mlx, game->window,
-        game->map_2D->img_ptr, 0, 0);
-}
-
-int exit_game(t_game *game)
-{
-    mlx_destroy_window(game->mlx, game->window);
-    mlx_destroy_display(game->mlx);
-    free(game->mlx);
-    free(game->map_2D);
-    exit(0);
-    return (0);
+        game->map_2d->img_ptr, 0, 0);
 }
 
 void move_pj(int key, t_player *player)
@@ -207,6 +197,34 @@ void move_pj(int key, t_player *player)
     else if (key == D)
         player->delta_x += 10;
     return;
+}
+void    free_mem(t_game *game)
+{
+    if (game->textures->e_texture != NULL)
+        free(game->textures->e_texture);
+    if (game->textures->n_texture != NULL)
+        free(game->textures->n_texture);
+    if (game->textures->s_texture != NULL)
+        free(game->textures->s_texture);
+    if (game->textures->w_texture != NULL)
+        free(game->textures->w_texture);
+    if (game->map->grid != NULL)
+        free_matrix(game->map->grid);
+    free(game->map);
+    free(game->textures);
+}
+
+int exit_game(t_game *game)
+{
+    free_mem(game);
+    if (game->map_2d && game->map_2d->img_ptr)
+        mlx_destroy_image(game->mlx, game->map_2d->img_ptr);
+    mlx_destroy_window(game->mlx, game->window);
+    mlx_destroy_display(game->mlx);
+    free(game->mlx);
+    free(game->map_2d);
+    exit(0);
+    return (0);
 }
 
 int handle_keypress(int keycode, t_game *game)
@@ -226,24 +244,6 @@ int handle_keypress(int keycode, t_game *game)
     return (0);
 }
 
-void    free_mem(t_game *game)
-{
-    if (game->textures->e_texture != NULL)
-        free(game->textures->e_texture);
-    if (game->textures->n_texture != NULL)
-        free(game->textures->n_texture);
-    if (game->textures->s_texture != NULL)
-        free(game->textures->s_texture);
-    if (game->textures->w_texture != NULL)
-        free(game->textures->w_texture);
-    if (game->map->grid != NULL)
-        free_matrix(game->map->grid);
-    free(game->map);
-    free(game->textures);
-    mlx_destroy_window(game->mlx, game->window);
-    mlx_destroy_display(game->mlx);
-    free(game->mlx);
-}
 int main(int argc, char *argv[])
 {
     t_game  game;
@@ -274,27 +274,26 @@ int main(int argc, char *argv[])
         printf("%s\n", game.map->grid[i]);
         i++;
     }
-    
     game.player.delta_x = 0;
     game.player.delta_y = 0;
     game.player.angle = -M_PI / 2;
 
-    game.map_2D = malloc(sizeof(t_2D_map));
+    game.map_2d = malloc(sizeof(t_2d_map));
     game.mlx = mlx_init();
     
     win_width = game.map->width * 100;
     win_height = game.map->height * 100;
     
     game.window = mlx_new_window(game.mlx, win_width, win_height, "cub3D");
-    game.map_2D->img_ptr = mlx_new_image(game.mlx, win_width, win_height);
-    game.map_2D->addr = mlx_get_data_addr(game.map_2D->img_ptr, &game.map_2D->bpp, &game.map_2D->line_len, &game.map_2D->endian); 
+    game.map_2d->img_ptr = mlx_new_image(game.mlx, win_width, win_height);
+    game.map_2d->addr = mlx_get_data_addr(game.map_2d->img_ptr, &game.map_2d->bpp, &game.map_2d->line_len, &game.map_2d->endian); 
     
     render(&game);
-    
+
     mlx_hook(game.window, 17, 0, exit_game, &game);
     mlx_key_hook(game.window, handle_keypress, &game);
     mlx_loop(game.mlx);
 
-    free_mem(&game);
+    
     return 0;
 }
