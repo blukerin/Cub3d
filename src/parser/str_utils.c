@@ -12,61 +12,33 @@
 
 #include "../../includes/cub3D.h"
 
-static void	add_new_line(t_game *game, char *line, int i)
+int	ft_isspace(char c)
 {
-	char	**ptr;
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r' || c == '\n');
+}
 
-	ptr = ft_calloc(sizeof(char *), i + 2);
-	if (!ptr)
-	{
-		free(line);
-		error_during_parse(game, 3);
-	}
-	i = 0;
-	while (game->map->grid[i] != NULL)
-	{
-		ptr[i] = game->map->grid[i];
+int	count_spaces(const char *line, int i)
+{
+	while (ft_isspace(line[i]))
 		i++;
-	}
-	ptr[i] = ft_strdup(line);
-	if (!ptr[i])
-	{
-		free(line);
-		error_during_parse(game, 3);
-	}
-	free(game->map->grid);
-	game->map->grid = ptr;
+	return (i);
 }
 
-static void	empty_map(t_game *game, char *line)
+int	get_max_len(t_game *game)
 {
-	game->map->grid = (char **)malloc(sizeof(char *) * 2);
-	if (!game->map->grid)
-	{
-		free(line);
-		error_during_parse(game, 3);
-	}
-	game->map->grid[0] = ft_strdup(line);
-	if (!game->map->grid[0])
-	{
-		free(line);
-		error_during_parse(game, 3);
-	}
-	game->map->grid[1] = NULL;
-}
-
-void	line_to_map(t_game *game, char *line)
-{
+	int	max_len;
+	int	len;
 	int	i;
 
-	if (!game->map->grid)
+	i = 1;
+	max_len = ft_strlen(game->map->grid[0]);
+	while (game->map->grid[i])
 	{
-		empty_map(game, line);
-		return ;
-	}
-	i = 0;
-	while (game->map->grid[i] != NULL)
+		len = ft_strlen(game->map->grid[i]);
+		if (len > max_len)
+			max_len = len;
 		i++;
-	add_new_line(game, line, i);
-	game->map->height = i + 1;
+	}
+	return (max_len);
 }

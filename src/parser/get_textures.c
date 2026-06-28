@@ -14,7 +14,7 @@
 
 void	get_texture(t_game *game, char *line, int n, int *count)
 {
-	int m;
+	int	m;
 
 	m = count_spaces(line, 2);
 	if (n == 1 && !game->textures->n_texture)

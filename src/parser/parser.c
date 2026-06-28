@@ -52,9 +52,9 @@ static int	parse_cub(t_game *game, char *file)
 	}
 	line = get_next_line(fd);
 	game->file_d = &fd;
-	while(line != NULL)
+	while (line != NULL)
 	{
-		if (is_not_empty(line))
+		if (is_not_empty(line, game))
 			check_line(game, line, &count);
 		free(line);
 		line = get_next_line(fd);
@@ -78,7 +78,7 @@ static void	init(t_game *game)
 static int	file_has_correct_extension(char *str)
 {
 	int	l;
-	
+
 	l = ft_strlen(str);
 	if (l < 5)
 		return (0);
@@ -93,7 +93,7 @@ static int	file_has_correct_extension(char *str)
 	return (1);
 }
 
-int parser(const int argc, char **argv, t_game *game)
+int	parser(const int argc, char **argv, t_game *game)
 {
 	if (argc != 2)
 	{

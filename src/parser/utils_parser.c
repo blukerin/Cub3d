@@ -12,12 +12,6 @@
 
 #include "../../includes/cub3D.h"
 
-int	ft_isspace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n'
-		|| c == '\v' || c == '\f' || c == '\r' || c == '\n');
-}
-
 void	free_matrix(char **arr)
 {
 	int	i;
@@ -31,21 +25,52 @@ void	free_matrix(char **arr)
 	free(arr);
 }
 
-int	is_not_empty(const char *str)
+int	map_not_completed(char **grid, int i)
+{
+	int	j;
+
+	j = 0;
+	while (ft_isspace(grid[i][j]))
+		j++;
+	while (grid[i][j] == '1' || ft_isspace(grid[i][j]))
+		j++;
+	if (grid[i][j] != '\0')
+		return (1);
+	return (0);
+}
+
+int	is_not_empty(char *str, t_game *game)
 {
 	int	i;
 
 	i = 0;
-	while(str[i] == ' ' || str[i] == 9)
+	while (ft_isspace(str[i]))
 		i++;
-	if (str[i] == '\0' || str[i] == '\n')
+	if (str[i] == '\0')
+	{
+		if (game->map != NULL && game->map->grid != NULL)
+		{
+			if (map_not_completed(game->map->grid, game->map->height - 1))
+			{
+				free(str);
+				error_during_parse(game, 1);
+			}
+		}
 		return (0);
+	}
 	return (1);
 }
 
-int 	count_spaces(const char *line, int i)
+int	numbers_not_in_range(int *colours)
 {
-	while(line[i] == ' ' || line[i] == 9)
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		if (colours[i] < 0 || colours[i] > 255)
+			return (1);
 		i++;
-	return (i);
+	}
+	return (0);
 }

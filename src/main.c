@@ -226,6 +226,24 @@ int handle_keypress(int keycode, t_game *game)
     return (0);
 }
 
+void    free_mem(t_game *game)
+{
+    if (game->textures->e_texture != NULL)
+        free(game->textures->e_texture);
+    if (game->textures->n_texture != NULL)
+        free(game->textures->n_texture);
+    if (game->textures->s_texture != NULL)
+        free(game->textures->s_texture);
+    if (game->textures->w_texture != NULL)
+        free(game->textures->w_texture);
+    if (game->map->grid != NULL)
+        free_matrix(game->map->grid);
+    free(game->map);
+    free(game->textures);
+    mlx_destroy_window(game->mlx, game->window);
+    mlx_destroy_display(game->mlx);
+    free(game->mlx);
+}
 int main(int argc, char *argv[])
 {
     t_game  game;
@@ -238,6 +256,24 @@ int main(int argc, char *argv[])
         return (1);
     
     parser(argc, argv, &game);
+
+    printf("Ceiling colour: %d\n", game.textures->ceiling_colour);
+    printf("Floor colour: %d\n", game.textures->floor_colour);
+    printf("North texture: %s\n", game.textures->n_texture);
+    printf("South texture: %s\n", game.textures->s_texture);
+    printf("East texture: %s\n", game.textures->e_texture);
+    printf("Wext texture: %s\n", game.textures->w_texture);
+    printf("Map Heigth: %d\n", game.map->height);
+    printf("Map Width: %d\n", game.map->width);
+    printf("Player Y: %d\n", game.player.delta_y);
+    printf("Player X: %d\n", game.player.delta_x);
+    printf("Player: %c\n", game.map->grid[game.player.delta_y][game.player.delta_x]);
+    int i = 0;
+    while (i < game.map->height)
+    {
+        printf("%s\n", game.map->grid[i]);
+        i++;
+    }
     
     game.player.delta_x = 0;
     game.player.delta_y = 0;
@@ -259,5 +295,6 @@ int main(int argc, char *argv[])
     mlx_key_hook(game.window, handle_keypress, &game);
     mlx_loop(game.mlx);
 
+    free_mem(&game);
     return 0;
 }
