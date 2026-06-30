@@ -36,7 +36,7 @@
 # include <fcntl.h>
 # include <errno.h>
 
-typedef struct s_2D_map
+/* typedef struct s_2D_map
 {
 	void	*img_ptr;
 	char	*addr;
@@ -44,7 +44,7 @@ typedef struct s_2D_map
 	int		line_len;
 	int		endian;
 }	t_2d_map;
-
+ */
 typedef struct s_textures
 {
 	char			*w_texture;
@@ -63,7 +63,7 @@ typedef struct s_player
     double  dir_y;
     double  cam_plane_x;  // plano de camara (perpendicular a dir)
     double  cam_plane_y;
-    char    dir_char;     // orientacion inicial (N/S/E/W) detectada en el parser
+    char    dir_char;     // orientacion inicial (N/S/E/W)
 }   t_player;
 
 typedef struct s_map

@@ -18,186 +18,6 @@ void pixel_put_image(char *addr, int x, int y, int size_line, int bpp, int color
     *(unsigned int *)dst = color;
 }
 
-void    draw_ray(t_game *game, int cx, int cy, double ray_angle)
-{
-    double  dx;
-    double  dy;
-    int     i;
-    int     x;
-    int     y;
-    int     max_x;
-    int     max_y;
-
-    dx = cos(ray_angle);
-    dy = sin(ray_angle);
-    i = 0;
-    x = cx;
-    y = cy;
-    max_x = game->map->width * 100;
-    max_y = game->map->height * 100;
-    
-    while (x >= 0 && x < max_x && y >= 0 && y < max_y
-        && game->map->grid[y / 100][x / 100] != '1')
-    {
-        pixel_put_image(game->map_2d->addr, x, y,
-            game->map_2d->line_len, game->map_2d->bpp, 0xFF0000);
-        x = cx + (int)(dx * i);
-        y = cy + (int)(dy * i);
-        i++;
-    }
-}
-
-void    cast_rays(t_game *game, int cx, int cy)
-{
-    int     col;
-    double  ray_angle;
-    int     win_width;
-
-    col = 0;
-    win_width = game->map->width * 100;
-    while (col < win_width)
-    {
-        ray_angle = (game->player.angle - FOV / 2)
-            + ((double)col / win_width) * FOV;
-        draw_ray(game, cx, cy, ray_angle);
-        col++;
-    }
-}
-
-void draw_2D_map(t_game *game)
-{
-    int color;
-    int y;
-    int x;
-    int py;
-    int px;
-
-    y = 0;
-    while (y < game->map->height)
-    {
-        x = 0;
-        while (x < game->map->width && game->map->grid[y][x])
-        {
-            color = 0x000000;
-            if (game->map->grid[y][x] == '0' || game->map->grid[y][x] == 'N'
-                || game->map->grid[y][x] == 'S' || game->map->grid[y][x] == 'E' 
-                || game->map->grid[y][x] == 'W') 
-                color = 0xFFFFFF;
-            else if (game->map->grid[y][x] == '1')
-                color = 0x000467;
-            
-            if (color != 0x000000)
-            {
-                py = 0;
-                while (py < 95)
-                {
-                    px = 0;
-                    while (px < 95)
-                    {
-                        pixel_put_image(game->map_2d->addr, x * 100 + px, y * 100 + py, 
-                            game->map_2d->line_len, game->map_2d->bpp, color);
-                        px++;
-                    }
-                    py++;
-                }
-            }
-            x++;
-        }
-        y++;
-    }
-}
-
-void draw_pj(t_game *game)
-{
-    int color;
-    int y;
-    int x;
-    int py;
-    int px;
-
-    color = 0x868687;
-    y = 0;
-    while (y < game->map->height)
-    {
-        x = 0;
-        while (x < game->map->width && game->map->grid[y][x])
-        {
-            if (game->map->grid[y][x] == 'N' || game->map->grid[y][x] == 'S' 
-                || game->map->grid[y][x] == 'E' || game->map->grid[y][x] == 'W')
-            {
-                py = 0;
-                while (py < 20)
-                {
-                    px = 0;
-                    while (px < 20)
-                    {
-                        pixel_put_image(game->map_2d->addr,
-                            x * 100 + px + game->player.delta_x,
-                            y * 100 + py + game->player.delta_y,
-                            game->map_2d->line_len,
-                            game->map_2d->bpp, color);
-                        px++;
-                    }
-                    py++;
-                }
-            }
-            x++;          
-        }
-        y++;
-    }
-}
-
-void    get_player_center(t_game *game, int *cx, int *cy)
-{
-    int y;
-    int x;
-
-    y = 0;
-    while (y < game->map->height)
-    {
-        x = 0;
-        while (x < game->map->width && game->map->grid[y][x])
-        {
-            if (game->map->grid[y][x] == 'N' || game->map->grid[y][x] == 'S' 
-                || game->map->grid[y][x] == 'E' || game->map->grid[y][x] == 'W')
-            {
-                *cx = x * 100 + game->player.delta_x + 10;
-                *cy = y * 100 + game->player.delta_y + 10;
-                return ;
-            }
-            x++;
-        }
-        y++;
-    }
-}
-
-void    render(t_game *game)
-{
-    int cx;
-    int cy;
-
-    cx = 0;
-    cy = 0;
-    draw_2D_map(game);
-    draw_pj(game);
-    get_player_center(game, &cx, &cy);
-    cast_rays(game, cx, cy);
-    mlx_put_image_to_window(game->mlx, game->window,
-        game->map_2d->img_ptr, 0, 0);
-}
-
-void move_pj(int key, t_player *player)
-{
-    if (key == W)
-        player->delta_y -= 10;
-    else if (key == A)
-        player->delta_x -= 10;
-    else if (key == S)
-        player->delta_y += 10;
-    else if (key == D)
-        player->delta_x += 10;
-    return;
-}
 void    free_mem(t_game *game)
 {
     if (game->textures->e_texture != NULL)
@@ -227,6 +47,46 @@ int exit_game(t_game *game)
     return (0);
 }
 
+
+
+// REESCRIBIR : Quitar las llamadas a draw_2D_map/draw_pj/cast_rays. 
+// En su lugar: bucle DDA por columna + pintar franjas + un único mlx_put_image_to_window.
+void    render(t_game *game)
+{
+    int cx;
+    int cy;
+
+    cx = 0;
+    cy = 0;
+    draw_2D_map(game);
+    draw_pj(game);
+    get_player_center(game, &cx, &cy);
+    cast_rays(game, cx, cy);
+    mlx_put_image_to_window(game->mlx, game->window,
+        game->map_2d->img_ptr, 0, 0);
+}
+
+//REESCRIBIR : Ahora mueve delta_x/delta_y a saltos de 10px. Reescribir a pos += dir * MOVE_SPEED (W/S)
+void move_player(int key, t_player *player, t_map *map, t_game *game)
+{
+    if (key == W)
+        player->
+    else if (key == A)
+        player->delta_x -= 10;
+    else if (key == S)
+        player->delta_y += 10;
+    else if (key == D)
+        player->delta_x += 10;
+    return;
+}
+
+void rotate_player()
+{
+
+}
+
+
+//REESCRIBIR : L Y R DEBEN ROTAR DIR/PLANE EN VEZ DE TOCAR PLAYER_ANGLE
 int handle_keypress(int keycode, t_game *game)
 {
     if (keycode == ESC)
@@ -260,6 +120,7 @@ void    init_player(t_game *game)
     game->player.cam_plane_x = 0.66 * ((d == 'N') - (d == 'S'));
     game->player.cam_plane_y = 0.66 * ((d == 'E') - (d == 'W'));
 }
+
 
 int main(int argc, char *argv[])
 {
