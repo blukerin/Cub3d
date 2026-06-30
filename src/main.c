@@ -244,6 +244,23 @@ int handle_keypress(int keycode, t_game *game)
     return (0);
 }
 
+void    init_player(t_game *game)
+{
+    int     cell_x;
+    int     cell_y;
+    char    d;
+
+    cell_x = (int)game->player.pos_x;
+    cell_y = (int)game->player.pos_y;
+    d = game->player.dir_char;
+    game->player.pos_x = cell_x + 0.5;
+    game->player.pos_y = cell_y + 0.5;
+    game->player.dir_x = (d == 'E') - (d == 'W');
+    game->player.dir_y = (d == 'S') - (d == 'N');
+    game->player.cam_plane_x = 0.66 * ((d == 'N') - (d == 'S'));
+    game->player.cam_plane_y = 0.66 * ((d == 'E') - (d == 'W'));
+}
+
 int main(int argc, char *argv[])
 {
     t_game  game;
@@ -256,27 +273,7 @@ int main(int argc, char *argv[])
         return (1);
     
     parser(argc, argv, &game);
-
-    printf("Ceiling colour: %d\n", game.textures->ceiling_colour);
-    printf("Floor colour: %d\n", game.textures->floor_colour);
-    printf("North texture: %s\n", game.textures->n_texture);
-    printf("South texture: %s\n", game.textures->s_texture);
-    printf("East texture: %s\n", game.textures->e_texture);
-    printf("Wext texture: %s\n", game.textures->w_texture);
-    printf("Map Heigth: %d\n", game.map->height);
-    printf("Map Width: %d\n", game.map->width);
-    printf("Player Y: %d\n", game.player.delta_y);
-    printf("Player X: %d\n", game.player.delta_x);
-    printf("Player: %c\n", game.map->grid[game.player.delta_y][game.player.delta_x]);
-    int i = 0;
-    while (i < game.map->height)
-    {
-        printf("%s\n", game.map->grid[i]);
-        i++;
-    }
-    game.player.delta_x = 0;
-    game.player.delta_y = 0;
-    game.player.angle = -M_PI / 2;
+    init_player(&game);
 
     game.map_2d = malloc(sizeof(t_2d_map));
     game.mlx = mlx_init();

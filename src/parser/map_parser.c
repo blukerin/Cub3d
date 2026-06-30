@@ -58,8 +58,9 @@ static int	is_incorrect_character(int i, int j, int *player, t_game *game)
 	if (c == 'N' || c == 'S' || c == 'W' || c == 'E')
 	{
 		(*player)++;
-		game->player.delta_x = j;
-		game->player.delta_y = i;
+		game->player.pos_x = j;
+		game->player.pos_y = i;
+		game->player.dir_char = c;
 		return (0);
 	}
 	if (c == '1' || c == '0' || ft_isspace(c))

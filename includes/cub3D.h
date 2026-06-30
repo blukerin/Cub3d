@@ -19,8 +19,12 @@
 # define ESC 65307
 # define LEFT 65361
 # define RIGHT 65363
-# define FOV (60 * M_PI / 180)
+# define FOV 1.0472
 # define WIDTH 600
+# define WIN_W 1024
+# define WIN_H 768
+# define MOVE_SPEED 0.05
+# define ROT_SPEED 0.03
 
 # include <stdio.h>
 # include <unistd.h>
@@ -53,10 +57,14 @@ typedef struct s_textures
 
 typedef struct s_player
 {
-	double	angle;
-	int		delta_x;
-	int		delta_y;
-}	t_player;
+    double  pos_x;
+    double  pos_y;
+    double  dir_x;    // hacia donde mira
+    double  dir_y;
+    double  cam_plane_x;  // plano de camara (perpendicular a dir)
+    double  cam_plane_y;
+    char    dir_char;     // orientacion inicial (N/S/E/W) detectada en el parser
+}   t_player;
 
 typedef struct s_map
 {
@@ -90,5 +98,8 @@ int		ft_isspace(char c);
 int		numbers_not_in_range(int *colours);
 int		map_not_completed(char **grid, int i);
 int		get_max_len(t_game *game);
+
+// Player
+void	init_player(t_game *game);
 
 #endif
