@@ -79,7 +79,7 @@ typedef struct s_game
 	void		*window;
 	int			*file_d;
 	t_map		*map;
-	t_2d_map	*map_2d;
+	//t_2d_map	*map_2d;
 	t_textures	*textures;
 	t_player	player;
 }	t_game;

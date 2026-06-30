@@ -37,12 +37,12 @@ void    free_mem(t_game *game)
 int exit_game(t_game *game)
 {
     free_mem(game);
-    if (game->map_2d && game->map_2d->img_ptr)
-        mlx_destroy_image(game->mlx, game->map_2d->img_ptr);
+    /* if (game->map_2d && game->map_2d->img_ptr)
+        mlx_destroy_image(game->mlx, game->map_2d->img_ptr); */
     mlx_destroy_window(game->mlx, game->window);
     mlx_destroy_display(game->mlx);
     free(game->mlx);
-    free(game->map_2d);
+    //free(game->map_2d);
     exit(0);
     return (0);
 }
@@ -58,31 +58,69 @@ void    render(t_game *game)
 
     cx = 0;
     cy = 0;
-    draw_2D_map(game);
+    /* draw_2D_map(game);
     draw_pj(game);
     get_player_center(game, &cx, &cy);
     cast_rays(game, cx, cy);
     mlx_put_image_to_window(game->mlx, game->window,
-        game->map_2d->img_ptr, 0, 0);
+        game->map_2d->img_ptr, 0, 0); */
 }
 
-//REESCRIBIR : Ahora mueve delta_x/delta_y a saltos de 10px. Reescribir a pos += dir * MOVE_SPEED (W/S)
+
 void move_player(int key, t_player *player, t_map *map, t_game *game)
 {
     if (key == W)
-        player->
-    else if (key == A)
-        player->delta_x -= 10;
+    {
+        if (map->grid[(int)(player->pos_x + player->dir_x * MOVE_SPEED)][(int)player->pos_y] != '1')
+            player->pos_x += player->dir_x * MOVE_SPEED;
+        if (map->grid[(int)player->pos_x][(int)(player->pos_y + player->dir_y * MOVE_SPEED)] != '1')
+            player->pos_y += player->dir_y * MOVE_SPEED;
+    }
     else if (key == S)
-        player->delta_y += 10;
+    {
+        if (map->grid[(int)(player->pos_x + player->dir_x * MOVE_SPEED * -1)][(int)player->pos_y] != '1')
+            player->pos_x += player->dir_x * MOVE_SPEED * -1;        
+        if (map->grid[(int)player->pos_x][(int)(player->pos_y + player->dir_y * MOVE_SPEED * -1)] != '1')
+            player->pos_y += player->dir_y * MOVE_SPEED * -1;
+    }
+    else if (key == A)
+    {
+        if (map->grid[(int)(player->pos_x - player->dir_y * MOVE_SPEED)][(int)player->pos_y] != '1')
+            player->pos_x -= player->dir_y * MOVE_SPEED;
+        if (map->grid[(int)player->pos_x][(int)(player->pos_y + player->dir_x * MOVE_SPEED)] != '1')
+            player->pos_y += player->dir_x * MOVE_SPEED;
+    }
     else if (key == D)
-        player->delta_x += 10;
+    {
+        if (map->grid[(int)(player->pos_x + player->dir_y * MOVE_SPEED)][(int)player->pos_y] != '1')
+            player->pos_x += player->dir_y * MOVE_SPEED;
+        if (map->grid[(int)player->pos_x][(int)(player->pos_y - player->dir_x * MOVE_SPEED)] != '1')
+            player->pos_y -= player->dir_x * MOVE_SPEED;
+    }
     return;
 }
 
-void rotate_player()
+void rotate_player(int key, t_player *player)
 {
+    double rot;
+    double temp_dir_x;
+    double temp_cam_plane_x;
 
+    if (key == LEFT || key == RIGHT)
+    {
+        if (key == LEFT)
+            rot = -ROT_SPEED;
+        else if (key == RIGHT)
+            rot = ROT_SPEED;
+    }
+    else 
+        return;
+    temp_dir_x = player->dir_x;
+    player->dir_x = player->dir_x * cos(rot) - player->dir_y * sin(rot);
+    player->dir_y = temp_dir_x * sin(rot) + player->dir_y * cos(rot);
+    temp_cam_plane_x = player->cam_plane_x;
+    player->cam_plane_x = player->cam_plane_x * cos(rot) - player->cam_plane_y * sin(rot);
+    player->cam_plane_y = temp_cam_plane_x * sin(rot) + player->cam_plane_y * cos(rot);
 }
 
 
@@ -92,15 +130,10 @@ int handle_keypress(int keycode, t_game *game)
     if (keycode == ESC)
         exit_game(game);
     if (keycode == W || keycode == A || keycode == S || keycode == D)
-        move_pj(keycode, &game->player);
-    else if (keycode == LEFT)
-        game->player.angle -= 0.1;
-    else if (keycode == RIGHT)
-        game->player.angle += 0.1;
-    
-    if (keycode == W || keycode == A || keycode == S || keycode == D
-        || keycode == LEFT || keycode == RIGHT)
-        render(game);
+        move_player(keycode, &game->player, game->map, game);
+    else if (keycode == LEFT || keycode == RIGHT)
+        rotate_player(keycode, &game->player);
+    render(game);
     return (0);
 }
 
@@ -136,15 +169,15 @@ int main(int argc, char *argv[])
     parser(argc, argv, &game);
     init_player(&game);
 
-    game.map_2d = malloc(sizeof(t_2d_map));
+    //game.map_2d = malloc(sizeof(t_2d_map));
     game.mlx = mlx_init();
     
     win_width = game.map->width * 100;
     win_height = game.map->height * 100;
     
     game.window = mlx_new_window(game.mlx, win_width, win_height, "cub3D");
-    game.map_2d->img_ptr = mlx_new_image(game.mlx, win_width, win_height);
-    game.map_2d->addr = mlx_get_data_addr(game.map_2d->img_ptr, &game.map_2d->bpp, &game.map_2d->line_len, &game.map_2d->endian); 
+    //game.map_2d->img_ptr = mlx_new_image(game.mlx, win_width, win_height);
+    //game.map_2d->addr = mlx_get_data_addr(game.map_2d->img_ptr, &game.map_2d->bpp, &game.map_2d->line_len, &game.map_2d->endian); 
     
     render(&game);
 
