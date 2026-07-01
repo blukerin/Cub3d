@@ -71,30 +71,30 @@ void move_player(int key, t_player *player, t_map *map, t_game *game)
 {
     if (key == W)
     {
-        if (map->grid[(int)(player->pos_x + player->dir_x * MOVE_SPEED)][(int)player->pos_y] != '1')
+        if (map->grid[(int)player->pos_y][(int)(player->pos_x + player->dir_x * MOVE_SPEED)] == '0')
             player->pos_x += player->dir_x * MOVE_SPEED;
-        if (map->grid[(int)player->pos_x][(int)(player->pos_y + player->dir_y * MOVE_SPEED)] != '1')
+        if (map->grid[(int)(player->pos_y + player->dir_y * MOVE_SPEED)][(int)player->pos_x] == '0')
             player->pos_y += player->dir_y * MOVE_SPEED;
     }
     else if (key == S)
     {
-        if (map->grid[(int)(player->pos_x + player->dir_x * MOVE_SPEED * -1)][(int)player->pos_y] != '1')
+        if (map->grid[(int)player->pos_y][(int)(player->pos_x + player->dir_x * MOVE_SPEED * -1)] == '0')
             player->pos_x += player->dir_x * MOVE_SPEED * -1;        
-        if (map->grid[(int)player->pos_x][(int)(player->pos_y + player->dir_y * MOVE_SPEED * -1)] != '1')
+        if (map->grid[(int)(player->pos_y + player->dir_y * MOVE_SPEED * -1)][(int)player->pos_x] == '0')
             player->pos_y += player->dir_y * MOVE_SPEED * -1;
     }
     else if (key == A)
     {
-        if (map->grid[(int)(player->pos_x - player->dir_y * MOVE_SPEED)][(int)player->pos_y] != '1')
+        if (map->grid[(int)player->pos_y][(int)(player->pos_x - player->dir_y * MOVE_SPEED)] == '0')
             player->pos_x -= player->dir_y * MOVE_SPEED;
-        if (map->grid[(int)player->pos_x][(int)(player->pos_y + player->dir_x * MOVE_SPEED)] != '1')
+        if (map->grid[(int)(player->pos_y + player->dir_x * MOVE_SPEED)][(int)player->pos_x] == '0')
             player->pos_y += player->dir_x * MOVE_SPEED;
     }
     else if (key == D)
     {
-        if (map->grid[(int)(player->pos_x + player->dir_y * MOVE_SPEED)][(int)player->pos_y] != '1')
+        if (map->grid[(int)player->pos_y][(int)(player->pos_x + player->dir_y * MOVE_SPEED)] == '0')
             player->pos_x += player->dir_y * MOVE_SPEED;
-        if (map->grid[(int)player->pos_x][(int)(player->pos_y - player->dir_x * MOVE_SPEED)] != '1')
+        if (map->grid[(int)(player->pos_y - player->dir_x * MOVE_SPEED)][(int)player->pos_x] == '0')
             player->pos_y -= player->dir_x * MOVE_SPEED;
     }
     return;
@@ -124,7 +124,6 @@ void rotate_player(int key, t_player *player)
 }
 
 
-//REESCRIBIR : L Y R DEBEN ROTAR DIR/PLANE EN VEZ DE TOCAR PLAYER_ANGLE
 int handle_keypress(int keycode, t_game *game)
 {
     if (keycode == ESC)
@@ -152,6 +151,7 @@ void    init_player(t_game *game)
     game->player.dir_y = (d == 'S') - (d == 'N');
     game->player.cam_plane_x = 0.66 * ((d == 'N') - (d == 'S'));
     game->player.cam_plane_y = 0.66 * ((d == 'E') - (d == 'W'));
+    game->map->grid[cell_y][cell_x] = '0';
 }
 
 
