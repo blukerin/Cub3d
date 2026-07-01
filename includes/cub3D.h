@@ -6,16 +6,16 @@
 /*   By: ridoming <ridoming@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 17:24:22 by ridoming          #+#    #+#             */
-/*   Updated: 2026/06/22 19:06:25 by ridoming         ###   ########.fr       */
+/*   Updated: 2026/07/01 00:00:00 by ridoming         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-# define W 119     
-# define A 97     
-# define S 115     
-# define D 100 
+# define W 119
+# define A 97
+# define S 115
+# define D 100
 # define ESC 65307
 # define LEFT 65361
 # define RIGHT 65363
@@ -36,15 +36,6 @@
 # include <fcntl.h>
 # include <errno.h>
 
-/* typedef struct s_2D_map
-{
-	void	*img_ptr;
-	char	*addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
-}	t_2d_map;
- */
 typedef struct s_textures
 {
 	char			*w_texture;
@@ -57,14 +48,14 @@ typedef struct s_textures
 
 typedef struct s_player
 {
-    double  pos_x;
-    double  pos_y;
-    double  dir_x;    // hacia donde mira
-    double  dir_y;
-    double  cam_plane_x;  // plano de camara (perpendicular a dir)
-    double  cam_plane_y;
-    char    dir_char;     // orientacion inicial (N/S/E/W)
-}   t_player;
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+	double	cam_plane_x;
+	double	cam_plane_y;
+	char	dir_char;
+}	t_player;
 
 typedef struct s_map
 {
@@ -79,7 +70,6 @@ typedef struct s_game
 	void		*window;
 	int			*file_d;
 	t_map		*map;
-	//t_2d_map	*map_2d;
 	t_textures	*textures;
 	t_player	player;
 }	t_game;
@@ -99,7 +89,24 @@ int		numbers_not_in_range(int *colours);
 int		map_not_completed(char **grid, int i);
 int		get_max_len(t_game *game);
 
-// Player
+// Init
 void	init_player(t_game *game);
+void	init_game(t_game *game);
+
+// Hooks
+int		exit_game(t_game *game);
+int		handle_keypress(int keycode, t_game *game);
+
+// Player
+void	move_player(int key, t_player *player, t_map *map, t_game *game);
+void	rotate_player(int key, t_player *player);
+
+// Render
+void	render(t_game *game);
+
+// Utils
+void	pixel_put_image(char *addr, int x, int y, int size_line, int bpp,
+			int color);
+void	free_mem(t_game *game);
 
 #endif

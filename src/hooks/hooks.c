@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ridoming <ridoming@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/22 17:24:22 by ridoming          #+#    #+#             */
+/*   Created: 2026/07/01 00:00:00 by ridoming          #+#    #+#             */
 /*   Updated: 2026/07/01 00:00:00 by ridoming         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../../includes/cub3D.h"
 
-int	main(int argc, char *argv[])
+int	exit_game(t_game *game)
 {
-	t_game	game;
+	free_mem(game);
+	mlx_destroy_window(game->mlx, game->window);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+	exit(0);
+	return (0);
+}
 
-	game.textures = malloc(sizeof(t_textures));
-	game.map = malloc(sizeof(t_map));
-	if (!game.textures || !game.map)
-		return (1);
-	parser(argc, argv, &game);
-	init_player(&game);
-	init_game(&game);
-	render(&game);
-	mlx_hook(game.window, 17, 0, exit_game, &game);
-	mlx_key_hook(game.window, handle_keypress, &game);
-	mlx_loop(game.mlx);
+int	handle_keypress(int keycode, t_game *game)
+{
+	if (keycode == ESC)
+		exit_game(game);
+	if (keycode == W || keycode == A || keycode == S || keycode == D)
+		move_player(keycode, &game->player, game->map, game);
+	else if (keycode == LEFT || keycode == RIGHT)
+		rotate_player(keycode, &game->player);
+	render(game);
 	return (0);
 }

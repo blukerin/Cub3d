@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ridoming <ridoming@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/22 17:24:22 by ridoming          #+#    #+#             */
+/*   Created: 2026/07/01 00:00:00 by ridoming          #+#    #+#             */
 /*   Updated: 2026/07/01 00:00:00 by ridoming         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../../includes/cub3D.h"
 
-int	main(int argc, char *argv[])
+void	init_game(t_game *game)
 {
-	t_game	game;
+	int	win_width;
+	int	win_height;
 
-	game.textures = malloc(sizeof(t_textures));
-	game.map = malloc(sizeof(t_map));
-	if (!game.textures || !game.map)
-		return (1);
-	parser(argc, argv, &game);
-	init_player(&game);
-	init_game(&game);
-	render(&game);
-	mlx_hook(game.window, 17, 0, exit_game, &game);
-	mlx_key_hook(game.window, handle_keypress, &game);
-	mlx_loop(game.mlx);
-	return (0);
+	game->mlx = mlx_init();
+	win_width = game->map->width * 100;
+	win_height = game->map->height * 100;
+	game->window = mlx_new_window(game->mlx, win_width, win_height, "cub3D");
 }

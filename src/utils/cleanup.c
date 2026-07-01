@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ridoming <ridoming@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/22 17:24:22 by ridoming          #+#    #+#             */
+/*   Created: 2026/07/01 00:00:00 by ridoming          #+#    #+#             */
 /*   Updated: 2026/07/01 00:00:00 by ridoming         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../../includes/cub3D.h"
 
-int	main(int argc, char *argv[])
+void	free_mem(t_game *game)
 {
-	t_game	game;
-
-	game.textures = malloc(sizeof(t_textures));
-	game.map = malloc(sizeof(t_map));
-	if (!game.textures || !game.map)
-		return (1);
-	parser(argc, argv, &game);
-	init_player(&game);
-	init_game(&game);
-	render(&game);
-	mlx_hook(game.window, 17, 0, exit_game, &game);
-	mlx_key_hook(game.window, handle_keypress, &game);
-	mlx_loop(game.mlx);
-	return (0);
+	if (game->textures->e_texture != NULL)
+		free(game->textures->e_texture);
+	if (game->textures->n_texture != NULL)
+		free(game->textures->n_texture);
+	if (game->textures->s_texture != NULL)
+		free(game->textures->s_texture);
+	if (game->textures->w_texture != NULL)
+		free(game->textures->w_texture);
+	if (game->map->grid != NULL)
+		free_matrix(game->map->grid);
+	free(game->map);
+	free(game->textures);
 }

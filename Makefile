@@ -15,6 +15,13 @@ LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 INCLUDES = -I. -I$(MLX_DIR) -I$(LIBFT_DIR)
 
 SRC = src/main.c\
+	src/init/init_game.c\
+	src/init/init_player.c\
+	src/hooks/hooks.c\
+	src/player/player.c\
+	src/render/render.c\
+	src/utils/cleanup.c\
+	src/utils/pixel.c\
 	src/parser/parser.c\
 	src/parser/get_textures.c\
 	src/parser/get_colours.c\

@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ridoming <ridoming@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/22 17:24:22 by ridoming          #+#    #+#             */
+/*   Created: 2026/07/01 00:00:00 by ridoming          #+#    #+#             */
 /*   Updated: 2026/07/01 00:00:00 by ridoming         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../../includes/cub3D.h"
 
-int	main(int argc, char *argv[])
+void	init_player(t_game *game)
 {
-	t_game	game;
+	int		cell_x;
+	int		cell_y;
+	char	d;
 
-	game.textures = malloc(sizeof(t_textures));
-	game.map = malloc(sizeof(t_map));
-	if (!game.textures || !game.map)
-		return (1);
-	parser(argc, argv, &game);
-	init_player(&game);
-	init_game(&game);
-	render(&game);
-	mlx_hook(game.window, 17, 0, exit_game, &game);
-	mlx_key_hook(game.window, handle_keypress, &game);
-	mlx_loop(game.mlx);
-	return (0);
+	cell_x = (int)game->player.pos_x;
+	cell_y = (int)game->player.pos_y;
+	d = game->player.dir_char;
+	game->player.pos_x = cell_x + 0.5;
+	game->player.pos_y = cell_y + 0.5;
+	game->player.dir_x = (d == 'E') - (d == 'W');
+	game->player.dir_y = (d == 'S') - (d == 'N');
+	game->player.cam_plane_x = 0.66 * ((d == 'N') - (d == 'S'));
+	game->player.cam_plane_y = 0.66 * ((d == 'E') - (d == 'W'));
+	game->map->grid[cell_y][cell_x] = '0';
 }
