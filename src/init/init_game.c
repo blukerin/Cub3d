@@ -18,7 +18,11 @@ void	init_game(t_game *game)
 	int	win_height;
 
 	game->mlx = mlx_init();
-	win_width = game->map->width * 100;
-	win_height = game->map->height * 100;
+	win_width = WIN_W;
+	win_height = WIN_H;
 	game->window = mlx_new_window(game->mlx, win_width, win_height, "cub3D");
+	game->img.img = mlx_new_image(game->mlx, win_width, win_height);
+	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bpp,
+		&game->img.line_len, &game->img.endian);
 }
+

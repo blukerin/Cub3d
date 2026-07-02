@@ -36,6 +36,15 @@
 # include <fcntl.h>
 # include <errno.h>
 
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_img;
+
 typedef struct s_textures
 {
 	char			*w_texture;
@@ -72,7 +81,9 @@ typedef struct s_game
 	t_map		*map;
 	t_textures	*textures;
 	t_player	player;
+	t_img		img;
 }	t_game;
+
 
 // Parser
 int		parser(int argc, char **argv, t_game *game);

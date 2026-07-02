@@ -14,5 +14,18 @@
 
 void	render(t_game *game)
 {
-	(void)game;
+	int	x;
+	int	y;
+
+	x = 0;
+	while (x < WIN_W)
+	{
+		y = 0;
+		while (y < WIN_H)
+		{
+			//
+			y++;
+		}
+		x++;
+	}
 }
