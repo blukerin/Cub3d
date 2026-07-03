@@ -12,28 +12,9 @@
 
 #include "../../includes/cub3D.h"
 
-void	move_player(int key, t_player *player, t_map *map, t_game *game)
+void	move_player_x_axis(int key, t_player *player, t_map *map)
 {
-	(void)game;
-	if (key == W)
-	{
-		if (map->grid[(int)player->pos_y]
-			[(int)(player->pos_x + player->dir_x * MOVE_SPEED)] == '0')
-			player->pos_x += player->dir_x * MOVE_SPEED;
-		if (map->grid[(int)(player->pos_y + player->dir_y * MOVE_SPEED)]
-			[(int)player->pos_x] == '0')
-			player->pos_y += player->dir_y * MOVE_SPEED;
-	}
-	else if (key == S)
-	{
-		if (map->grid[(int)player->pos_y]
-			[(int)(player->pos_x + player->dir_x * MOVE_SPEED * -1)] == '0')
-			player->pos_x += player->dir_x * MOVE_SPEED * -1;
-		if (map->grid[(int)(player->pos_y + player->dir_y * MOVE_SPEED * -1)]
-			[(int)player->pos_x] == '0')
-			player->pos_y += player->dir_y * MOVE_SPEED * -1;
-	}
-	else if (key == A)
+	if (key == A)
 	{
 		if (map->grid[(int)player->pos_y]
 			[(int)(player->pos_x - player->dir_y * MOVE_SPEED)] == '0')
@@ -53,21 +34,38 @@ void	move_player(int key, t_player *player, t_map *map, t_game *game)
 	}
 }
 
+void	move_player_y_axis(int key, t_player *player, t_map *map)
+{
+	if (key == W)
+	{
+		if (map->grid[(int)player->pos_y]
+			[(int)(player->pos_x + player->dir_x * MOVE_SPEED)] == '0')
+			player->pos_x += player->dir_x * MOVE_SPEED;
+		if (map->grid[(int)(player->pos_y + player->dir_y * MOVE_SPEED)]
+			[(int)player->pos_x] == '0')
+			player->pos_y += player->dir_y * MOVE_SPEED;
+	}
+	else if (key == S)
+	{
+		if (map->grid[(int)player->pos_y]
+			[(int)(player->pos_x + player->dir_x * MOVE_SPEED * -1)] == '0')
+			player->pos_x += player->dir_x * MOVE_SPEED * -1;
+		if (map->grid[(int)(player->pos_y + player->dir_y * MOVE_SPEED * -1)]
+			[(int)player->pos_x] == '0')
+			player->pos_y += player->dir_y * MOVE_SPEED * -1;
+	}
+}
+
 void	rotate_player(int key, t_player *player)
 {
 	double	rot;
 	double	temp_dir_x;
 	double	temp_cam_plane_x;
 
-	if (key == LEFT || key == RIGHT)
-	{
-		if (key == LEFT)
-			rot = -ROT_SPEED;
-		else
-			rot = ROT_SPEED;
-	}
+	if (key == LEFT)
+		rot = -ROT_SPEED;
 	else
-		return ;
+		rot = ROT_SPEED;
 	temp_dir_x = player->dir_x;
 	player->dir_x = player->dir_x * cos(rot) - player->dir_y * sin(rot);
 	player->dir_y = temp_dir_x * sin(rot) + player->dir_y * cos(rot);

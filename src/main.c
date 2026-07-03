@@ -12,20 +12,23 @@
 
 #include "../includes/cub3D.h"
 
+static void	main_game(t_game *game)
+{
+	init_game(game);
+	render(game);
+	mlx_hook(game->window, 17, 0, exit_game, game);
+	mlx_hook(game->window, 2, 1L<<0, key_press, game);
+	mlx_hook(game->window, 3, 1L<<1, key_release, game);
+	mlx_loop_hook(game->mlx, movement_loop, game);
+	mlx_loop(game->mlx);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_game	game;
 
-	game.textures = malloc(sizeof(t_textures));
-	game.map = malloc(sizeof(t_map));
-	if (!game.textures || !game.map)
-		return (1);
 	parser(argc, argv, &game);
 	init_player(&game);
-	init_game(&game);
-	render(&game);
-	mlx_hook(game.window, 17, 0, exit_game, &game);
-	mlx_key_hook(game.window, handle_keypress, &game);
-	mlx_loop(game.mlx);
+	main_game(&game);
 	return (0);
 }

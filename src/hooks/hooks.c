@@ -22,14 +22,78 @@ int	exit_game(t_game *game)
 	return (0);
 }
 
-int	handle_keypress(int keycode, t_game *game)
+int	movement_loop(t_game *game)
+{
+	int	moved;
+
+	moved = 0;
+	if (game->mov.w_move)
+	{
+		move_player_y_axis(W, &game->player, game->map);
+		moved = 1;
+	}
+	if (game->mov.a_move)
+	{
+		move_player_x_axis(A, &game->player, game->map);
+		moved = 1;
+	}
+	if (game->mov.s_move)
+	{
+		move_player_y_axis(S, &game->player, game->map);
+		moved = 1;
+	}
+	if (game->mov.d_move)
+	{
+		move_player_x_axis(D, &game->player, game->map);
+		moved = 1;
+	}
+	if (game->mov.left_move)
+	{
+		rotate_player(LEFT, &game->player);
+		moved = 1;
+	}
+	if (game->mov.right_move)
+	{
+		rotate_player(RIGHT, &game->player);
+		moved = 1;
+	}
+	if (moved)
+		render(game);
+	return (0);
+}
+
+int	key_release(int keycode, t_game *game)
+{
+	if (keycode == W)
+		game->mov.w_move = 0;
+	else if (keycode == A)
+		game->mov.a_move = 0;
+	else if (keycode == S)
+		game->mov.s_move = 0;
+	else if (keycode == D)
+		game->mov.d_move = 0;
+	else if (keycode == RIGHT)
+		game->mov.right_move = 0;
+	else if (keycode == LEFT)
+		game->mov.left_move = 0;
+	return (0);
+}
+
+int	key_press(int keycode, t_game *game)
 {
 	if (keycode == ESC)
 		exit_game(game);
-	if (keycode == W || keycode == A || keycode == S || keycode == D)
-		move_player(keycode, &game->player, game->map, game);
-	else if (keycode == LEFT || keycode == RIGHT)
-		rotate_player(keycode, &game->player);
-	render(game);
+	else if (keycode == W)
+		game->mov.w_move = 1;
+	else if (keycode == A)
+		game->mov.a_move = 1;
+	else if (keycode == S)
+		game->mov.s_move = 1;
+	else if (keycode == D)
+		game->mov.d_move = 1;
+	else if (keycode == RIGHT)
+		game->mov.right_move = 1;
+	else if (keycode == LEFT)
+		game->mov.left_move = 1;
 	return (0);
 }

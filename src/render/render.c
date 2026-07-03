@@ -17,6 +17,7 @@ void	render(t_game *game)
 	int	x;
 	int	y;
 
+	(void)game;
 	x = 0;
 	while (x < WIN_W)
 	{

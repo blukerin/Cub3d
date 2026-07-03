@@ -17,6 +17,12 @@ void	init_game(t_game *game)
 	int	win_width;
 	int	win_height;
 
+	game->mov.w_move = 0;
+	game->mov.a_move = 0;
+	game->mov.s_move = 0;
+	game->mov.d_move = 0;
+	game->mov.left_move = 0;
+	game->mov.right_move = 0;
 	game->mlx = mlx_init();
 	win_width = WIN_W;
 	win_height = WIN_H;

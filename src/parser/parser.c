@@ -95,6 +95,15 @@ static int	file_has_correct_extension(char *str)
 
 int	parser(const int argc, char **argv, t_game *game)
 {
+	game->textures = malloc(sizeof(t_textures));
+	if (!game->textures)
+		error_during_parse(game, 3);
+	game->map = malloc(sizeof(t_map));
+	if (!game->map)
+	{
+		free(game->textures);
+		error_during_parse(game, 3);
+	}
 	if (argc != 2)
 	{
 		ft_putstr_fd("Error\nIncorrect number of arguments\n", STDERR_FILENO);

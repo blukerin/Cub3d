@@ -26,15 +26,22 @@
 # define MOVE_SPEED 0.05
 # define ROT_SPEED 0.03
 
-# include <stdio.h>
-# include <unistd.h>
 # include <math.h>
-# include <stdlib.h>
 # include "../mlx/mlx.h"
 # include "libft/libft.h"
 # include <sys/time.h>
 # include <fcntl.h>
 # include <errno.h>
+
+typedef struct s_mov
+{
+	int	w_move;
+	int	s_move;
+	int	d_move;
+	int	a_move;
+	int	left_move;
+	int	right_move;
+}	t_mov;
 
 typedef struct s_img
 {
@@ -80,6 +87,7 @@ typedef struct s_game
 	int			*file_d;
 	t_map		*map;
 	t_textures	*textures;
+	t_mov		mov;
 	t_player	player;
 	t_img		img;
 }	t_game;
@@ -106,10 +114,13 @@ void	init_game(t_game *game);
 
 // Hooks
 int		exit_game(t_game *game);
-int		handle_keypress(int keycode, t_game *game);
+int		key_press(int keycode, t_game *game);
+int		key_release(int keycode, t_game *game);
+int		movement_loop(t_game *game);
 
 // Player
-void	move_player(int key, t_player *player, t_map *map, t_game *game);
+void	move_player_y_axis(int key, t_player *player, t_map *map);
+void	move_player_x_axis(int key, t_player *player, t_map *map);
 void	rotate_player(int key, t_player *player);
 
 // Render
