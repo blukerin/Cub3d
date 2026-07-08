@@ -24,9 +24,12 @@ void	render(t_game *game)
 		y = 0;
 		while (y < WIN_H)
 		{
-			//
+			pixel_put_image(game->img.addr, x, y,game->img.line_len,game->img.bpp,
+				0x0000FF
+			);
 			y++;
 		}
 		x++;
 	}
+	mlx_put_image_to_window(game->mlx, game->window, game->img.img, 0, 0);
 }
