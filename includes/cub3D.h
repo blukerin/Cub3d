@@ -62,6 +62,25 @@ typedef struct s_textures
 	unsigned int	ceiling_colour;
 }	t_textures;
 
+typedef struct s_ray
+{
+	double	ray_dir_x; 		// direccion del rayo 
+	double	ray_dir_y;
+	int		map_x;			// casilla actual
+	int		map_y;
+	int		step_x;			// sentido del avance
+	int		step_y;
+	double	delta_dist_x;	// coste de cruzar una casilla
+	double	delta_dist_y;
+	double	side_dist_x;	// distancia acumulada hasta la proxima linea
+	double	side_dist_y;
+	int		side;			// 0 si choque vertical, si horizontal
+	double	perp_wall_dist;	// distancia perpendicular final
+	int		line_height;	// altura de la linea a pintar
+	int		draw_start;		// donde empezamos a pintarla y donde acabamos
+	int		draw_end;
+}	t_ray;
+
 typedef struct s_player
 {
 	double	pos_x;
