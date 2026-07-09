@@ -14,23 +14,6 @@
 #include <stdlib.h>
 
 
-/* ¿Hacia dónde apunta este rayo? → init_ray
-¿Cuánto cuesta cruzar una casilla? → init_ray
-¿En qué sentido avanzo por el mapa? → init_steps
-¿Cuánto falta para el primer cruce? → init_steps */
-
-/* 
-ray_dir_x/y (la brújula): cada columna de pantalla mira en una dirección 
-ligeramente distinta dentro de tu abanico de visión. 
-Con dir + cam_plane * camera_x construyes la flecha exacta de ESTA columna. 
-Es "hacia dónde apunta el taxi".
-map_x/y (el punto de salida): la casilla del grid donde empieza el viaje 
-(tu posición sin decimales).
-delta_dist_x/y (la tarifa): cuánto recorrido de rayo cuesta atravesar 
-una casilla entera en horizontal y en vertical. 
-Un rayo muy inclinado paga caro cruzar columnas y barato cruzar filas, y viceversa.
-Esto es fijo para todo el viaje: se calcula una vez y no cambia. */
-
 static void	init_ray(t_game *game, t_ray *ray, int x)
 {
 	double camera_x; 
@@ -50,43 +33,105 @@ static void	init_ray(t_game *game, t_ray *ray, int x)
 		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
 }
 
-
-/* step_x/y (el sentido de la marcha): el bucle DDA avanza casilla a casilla sumando algo a map_x o map_y. 
-¿Suma o resta? Si el rayo apunta a la izquierda, step_x = -1; a la derecha, +1. Igual en vertical. 
-Es el "palanca de marcha adelante/atrás" por eje.
-
-side_dist_x/y (el primer tramo): aquí hay una asimetría importante.Todos los saltos del viaje costarán exactamente delta_dist... menos el primero, 
-porque tú no empiezas pegado a una línea de la cuadrícula, 
-empiezas en medio de una casilla (en x.5). El primer tramo es más corto, y además depende del sentido: si vas a la derecha te falta el 
-trozo hasta el borde derecho de tu casilla; si vas a la izquierda, hasta el borde izquierdo. side_dist arranca valiendo ese primer 
-tramito convertido a distancia de rayo. */
-
 static void	init_steps(t_ray *ray, t_player *player)
 {
-	
+	if (ray->ray_dir_x < 0)
+	{
+		ray->step_x = -1;
+		ray->side_dist_x = (player->pos_x - ray->map_x) * ray->delta_dist_x;
+	}
+	else
+	{
+		ray->step_x = 1;
+		ray->side_dist_x = (ray->map_x + 1.0 - player->pos_x) * ray->delta_dist_x;
+	}
+	if (ray->ray_dir_y < 0)
+	{
+		ray->step_y = -1;
+		ray->side_dist_y = (player->pos_y - ray->map_y) * ray->delta_dist_y;
+	}
+	else
+	{
+		ray->step_y = 1;
+		ray->side_dist_y = (ray->map_y + 1.0 - player->pos_y) * ray->delta_dist_y;
+	}
+}
+
+static void	dda(t_ray *ray, t_map *map)
+{
+	int	hit;
+
+	hit = 0;
+	while (hit == 0)
+	{
+		if (ray->side_dist_x < ray->side_dist_y)
+		{
+			ray->side_dist_x += ray->delta_dist_x;
+			ray->map_x += ray->step_x;
+			ray->side = 0;
+		}
+		else
+		{
+			ray->side_dist_y += ray->delta_dist_y;
+			ray->map_y += ray->step_y;
+			ray->side = 1;
+		}
+		if (ray->map_y < 0 || ray->map_y >= map->height
+			|| ray->map_x < 0 || ray->map_x >= map->width)
+			hit = 1;
+		else if (map->grid[ray->map_y][ray->map_x] == '1')
+			hit = 1;
+	}
+}
+
+static void	draw_column(t_game *game, t_ray *ray, int x)
+{
+	int	y;
+	int	color;
+
+	if (ray->side == 0)
+		ray->perp_wall_dist = ray->side_dist_x - ray->delta_dist_x;
+	else
+		ray->perp_wall_dist = ray->side_dist_y - ray->delta_dist_y;
+	ray->line_height = (int)(WIN_H / ray->perp_wall_dist);
+	ray->draw_start = -ray->line_height / 2 + WIN_H / 2;
+	if (ray->draw_start < 0)
+		ray->draw_start = 0;
+	ray->draw_end = ray->line_height / 2 + WIN_H / 2;
+	if (ray->draw_end >= WIN_H)
+		ray->draw_end = WIN_H - 1;
+	y = 0;
+	while (y < WIN_H)
+	{
+		if (y < ray->draw_start)
+			color = game->textures->ceiling_colour;
+		else if (y <= ray->draw_end)
+		{
+			if (ray->side == 0)
+				color = 0xAAAAAA;
+			else
+				color = 0x555555;
+		}
+		else
+			color = game->textures->floor_colour;
+		pixel_put_image(game->img.addr, x, y, game->img.line_len,
+			game->img.bpp, color);
+		y++;
+	}
 }
 
 void	render(t_game *game)
 {
-	int	x;
-	int	y;
-	t_ray *ray;
+	int		x;
+	t_ray	ray;
 
-	ray = malloc(sizeof(t_ray));
-	if (!ray)
-		return;
-	(void)game;
 	x = 0;
 	while (x < WIN_W)
 	{
-		y = 0;
-		while (y < WIN_H)
-		{
-			pixel_put_image(game->img.addr, x, y,game->img.line_len,game->img.bpp,
-				0x0000FF
-			);
-			y++;
-		}
+		init_ray(game, &ray, x);
+		init_steps(&ray, &game->player);
+		dda(&ray, game->map);
+		draw_column(game, &ray, x);
 		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->window, game->img.img, 0, 0);

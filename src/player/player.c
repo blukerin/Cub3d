@@ -17,20 +17,20 @@ void	move_player_x_axis(int key, t_player *player, t_map *map)
 	if (key == A)
 	{
 		if (map->grid[(int)player->pos_y]
-			[(int)(player->pos_x - player->dir_y * MOVE_SPEED)] == '0')
-			player->pos_x -= player->dir_y * MOVE_SPEED;
-		if (map->grid[(int)(player->pos_y + player->dir_x * MOVE_SPEED)]
-			[(int)player->pos_x] == '0')
-			player->pos_y += player->dir_x * MOVE_SPEED;
-	}
-	else if (key == D)
-	{
-		if (map->grid[(int)player->pos_y]
 			[(int)(player->pos_x + player->dir_y * MOVE_SPEED)] == '0')
 			player->pos_x += player->dir_y * MOVE_SPEED;
 		if (map->grid[(int)(player->pos_y - player->dir_x * MOVE_SPEED)]
 			[(int)player->pos_x] == '0')
 			player->pos_y -= player->dir_x * MOVE_SPEED;
+	}
+	else if (key == D)
+	{
+		if (map->grid[(int)player->pos_y]
+			[(int)(player->pos_x - player->dir_y * MOVE_SPEED)] == '0')
+			player->pos_x -= player->dir_y * MOVE_SPEED;
+		if (map->grid[(int)(player->pos_y + player->dir_x * MOVE_SPEED)]
+			[(int)player->pos_x] == '0')
+			player->pos_y += player->dir_x * MOVE_SPEED;
 	}
 }
 
