@@ -150,4 +150,9 @@ void	pixel_put_image(char *addr, int x, int y, int size_line, int bpp,
 			int color);
 void	free_mem(t_game *game);
 
+void	init_ray(t_game *game, t_ray *ray, int x);
+void	init_steps(t_ray *ray, t_player *player);
+void	dda(t_ray *ray, t_map *map);
+void	draw_column(t_game *game, t_ray *ray, int x);
+
 #endif

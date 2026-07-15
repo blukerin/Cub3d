@@ -20,6 +20,7 @@ SRC = src/main.c\
 	src/hooks/hooks.c\
 	src/player/player.c\
 	src/render/render.c\
+	src/render/raycast.c\
 	src/utils/cleanup.c\
 	src/utils/pixel.c\
 	src/parser/parser.c\
