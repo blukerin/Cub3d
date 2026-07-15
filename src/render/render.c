@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
-#include <stdlib.h>
 
 
 static void	init_ray(t_game *game, t_ray *ray, int x)
@@ -83,12 +82,8 @@ static void	dda(t_ray *ray, t_map *map)
 			hit = 1;
 	}
 }
-
-static void	draw_column(t_game *game, t_ray *ray, int x)
+static void draw_data(t_ray *ray)
 {
-	int	y;
-	int	color;
-
 	if (ray->side == 0)
 		ray->perp_wall_dist = ray->side_dist_x - ray->delta_dist_x;
 	else
@@ -100,6 +95,14 @@ static void	draw_column(t_game *game, t_ray *ray, int x)
 	ray->draw_end = ray->line_height / 2 + WIN_H / 2;
 	if (ray->draw_end >= WIN_H)
 		ray->draw_end = WIN_H - 1;
+}
+
+static void	draw_column(t_game *game, t_ray *ray, int x)
+{
+	int	y;
+	int	color;
+
+	draw_data(ray);
 	y = 0;
 	while (y < WIN_H)
 	{

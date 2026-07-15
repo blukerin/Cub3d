@@ -337,3 +337,6 @@ PARA VER REPRESENTADO ESTO YA TE DIGO QUE PUEDES MIRAR EN LA SECCION -> UNTEXTUR
 >
 > En una versión sin texturas (que es por donde deberías empezar), la pared es un color plano. Puedes usar side para pintar los lados horizontales un poco más oscuros que los verticales, y así se distinguen las esquinas (da sensación de sombra/relieve)."
 
+------
+
+
