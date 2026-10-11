@@ -64,7 +64,7 @@ typedef struct s_textures
 
 typedef struct s_ray
 {
-	double	ray_dir_x; 		// direccion del rayo 
+	double	ray_dir_x;		// direccion del rayo
 	double	ray_dir_y;
 	int		map_x;			// casilla actual
 	int		map_y;
@@ -110,7 +110,6 @@ typedef struct s_game
 	t_player	player;
 	t_img		img;
 }	t_game;
-
 
 // Parser
 int		parser(int argc, char **argv, t_game *game);

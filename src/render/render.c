@@ -12,7 +12,6 @@
 
 #include "../../includes/cub3D.h"
 
-
 void	render(t_game *game)
 {
 	int		x;

@@ -12,14 +12,29 @@
 
 #include "../../includes/cub3D.h"
 
-int	exit_game(t_game *game)
+static int	movement_loop_2(t_game *game, int *moved)
 {
-	free_mem(game);
-	mlx_destroy_window(game->mlx, game->window);
-	mlx_destroy_display(game->mlx);
-	free(game->mlx);
-	exit(0);
-	return (0);
+	if (game->mov.w_move)
+	{
+		move_player_y_axis(W, &game->player, game->map);
+		*moved = 1;
+	}
+	if (game->mov.a_move)
+	{
+		move_player_x_axis(A, &game->player, game->map);
+		*moved = 1;
+	}
+	if (game->mov.s_move)
+	{
+		move_player_y_axis(S, &game->player, game->map);
+		*moved = 1;
+	}
+	if (game->mov.d_move)
+	{
+		move_player_x_axis(D, &game->player, game->map);
+		*moved = 1;
+	}
+	return (1);
 }
 
 int	movement_loop(t_game *game)
@@ -27,26 +42,7 @@ int	movement_loop(t_game *game)
 	int	moved;
 
 	moved = 0;
-	if (game->mov.w_move)
-	{
-		move_player_y_axis(W, &game->player, game->map);
-		moved = 1;
-	}
-	if (game->mov.a_move)
-	{
-		move_player_x_axis(A, &game->player, game->map);
-		moved = 1;
-	}
-	if (game->mov.s_move)
-	{
-		move_player_y_axis(S, &game->player, game->map);
-		moved = 1;
-	}
-	if (game->mov.d_move)
-	{
-		move_player_x_axis(D, &game->player, game->map);
-		moved = 1;
-	}
+	movement_loop_2(game, &moved);
 	if (game->mov.left_move)
 	{
 		rotate_player(LEFT, &game->player);
@@ -95,5 +91,15 @@ int	key_press(int keycode, t_game *game)
 		game->mov.right_move = 1;
 	else if (keycode == LEFT)
 		game->mov.left_move = 1;
+	return (0);
+}
+
+int	exit_game(t_game *game)
+{
+	free_mem(game);
+	mlx_destroy_window(game->mlx, game->window);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+	exit(0);
 	return (0);
 }

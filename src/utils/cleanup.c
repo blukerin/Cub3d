@@ -24,6 +24,8 @@ void	free_mem(t_game *game)
 		free(game->textures->w_texture);
 	if (game->map->grid != NULL)
 		free_matrix(game->map->grid);
+	if (game->img.img != NULL)
+		mlx_destroy_image(game->mlx, game->img.img);
 	free(game->map);
 	free(game->textures);
 }

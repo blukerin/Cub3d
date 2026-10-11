@@ -17,8 +17,8 @@ static void	main_game(t_game *game)
 	init_game(game);
 	render(game);
 	mlx_hook(game->window, 17, 0, exit_game, game);
-	mlx_hook(game->window, 2, 1L<<0, key_press, game);
-	mlx_hook(game->window, 3, 1L<<1, key_release, game);
+	mlx_hook(game->window, 2, 1L << 0, key_press, game);
+	mlx_hook(game->window, 3, 1L << 1, key_release, game);
 	mlx_loop_hook(game->mlx, movement_loop, game);
 	mlx_loop(game->mlx);
 }
