@@ -75,8 +75,7 @@ void draw_2D_map(t_game *game)
                     px = 0;
                     while (px < 95)
                     {
-                        pixel_put_image(game->map_2d->addr, x * 100 + px, y * 100 + py, 
-                            game->map_2d->line_len, game->map_2d->bpp, color);
+                        pixel_put_image(game, x * 100 + px, y * 100 + py, color);
                         px++;
                     }
                     py++;

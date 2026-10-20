@@ -12,11 +12,10 @@
 
 #include "../../includes/cub3D.h"
 
-void	pixel_put_image(char *addr, int x, int y, int size_line, int bpp,
-		int color)
+void	pixel_put_image(t_game *game, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = addr + (y * size_line + x * (bpp / 8));
+	dst = game->img.addr + (y * game->img.line_len + x * (game->img.bpp / 8));
 	*(unsigned int *)dst = color;
 }

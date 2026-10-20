@@ -149,10 +149,13 @@ void	rotate_player(int key, t_player *player);
 
 // Render
 void	render(t_game *game);
+t_img	*get_wall_texture(t_game *game, t_ray *ray);
+int		get_texture_color(t_img *texture, int tex_x, int tex_y);
+int		get_texture_y(int y, t_ray *ray, t_img *texture);
+int		get_texture_x(t_game *game, t_ray *ray, t_img *texture);
 
 // Utils
-void	pixel_put_image(char *addr, int x, int y, int size_line, int bpp,
-			int color);
+void	pixel_put_image(t_game *game, int x, int y, int color);
 void	free_mem(t_game *game);
 
 void	init_ray(t_game *game, t_ray *ray, int x);

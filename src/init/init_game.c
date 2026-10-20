@@ -12,24 +12,22 @@
 
 #include "../../includes/cub3D.h"
 
+static void	load_texture(t_game *game, t_img *tex, char *route)
+{
+	tex->img = mlx_xpm_file_to_image(game->mlx, route,
+			&tex->width, &tex->height);
+	if (tex->img == NULL)
+		exit_game(game);
+	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp,
+			&tex->line_len, &tex->endian);
+}
+
 static void	init_textures(t_game *game)
 {
-	game->textures->n_img.img = mlx_xpm_file_to_image(game->mlx, game->textures->n_route, &game->textures->n_img.width, &game->textures->n_img.height);
-	if (game->textures->n_img.img == NULL)
-		exit_game(game);
-	game->textures->n_img.addr = mlx_get_data_addr(game->textures->n_img.img, &game->textures->n_img.bpp, &game->textures->n_img.line_len, &game->textures->n_img.endian);
-	game->textures->s_img.img = mlx_xpm_file_to_image(game->mlx, game->textures->s_route, &game->textures->s_img.width, &game->textures->s_img.height);
-	if (game->textures->s_img.img == NULL)
-		exit_game(game);
-	game->textures->s_img.addr = mlx_get_data_addr(game->textures->s_img.img, &game->textures->s_img.bpp, &game->textures->s_img.line_len, &game->textures->s_img.endian);
-	game->textures->e_img.img = mlx_xpm_file_to_image(game->mlx, game->textures->e_route, &game->textures->e_img.width, &game->textures->e_img.height);
-	if (game->textures->e_img.img == NULL)
-		exit_game(game);
-	game->textures->e_img.addr = mlx_get_data_addr(game->textures->e_img.img, &game->textures->e_img.bpp, &game->textures->e_img.line_len, &game->textures->e_img.endian);
-	game->textures->w_img.img = mlx_xpm_file_to_image(game->mlx, game->textures->w_route, &game->textures->w_img.width, &game->textures->w_img.height);
-	if (game->textures->w_img.img == NULL)
-		exit_game(game);
-	game->textures->w_img.addr = mlx_get_data_addr(game->textures->w_img.img, &game->textures->w_img.bpp, &game->textures->w_img.line_len, &game->textures->w_img.endian);
+	load_texture(game, &game->textures->n_img, game->textures->n_route);
+	load_texture(game, &game->textures->s_img, game->textures->s_route);
+	load_texture(game, &game->textures->e_img, game->textures->e_route);
+	load_texture(game, &game->textures->w_img, game->textures->w_route);
 }
 
 void	init_game(t_game *game)
