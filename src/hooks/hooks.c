@@ -97,8 +97,10 @@ int	key_press(int keycode, t_game *game)
 int	exit_game(t_game *game)
 {
 	free_mem(game);
-	mlx_destroy_window(game->mlx, game->window);
-	mlx_destroy_display(game->mlx);
+	if (game->window != NULL)
+		mlx_destroy_window(game->mlx, game->window);
+	if (game->mlx != NULL)
+		mlx_destroy_display(game->mlx);
 	free(game->mlx);
 	exit(0);
 	return (0);

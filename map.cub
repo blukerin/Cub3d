@@ -1,7 +1,7 @@
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
+NO ./textures/Brick/Brick04.xpm
+SO ./textures/Stone/Stone10.xpm
+WE ./textures/Tiles/Tiles05.xpm
+EA ./textures/Wood/Wood04.xpm
 
 F 220,100,0
 C 225,0,9
@@ -14,5 +14,4 @@ C 225,0,9
     111001010001
     101001000001
     111111111111
-
 

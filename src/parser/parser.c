@@ -48,6 +48,8 @@ static int	parse_cub(t_game *game, char *file)
 	if (fd < 0)
 	{
 		ft_putstr_fd("Error\nOpening file failed\n", STDERR_FILENO);
+		free(game->map);
+		free(game->textures);
 		return (0);
 	}
 	line = get_next_line(fd);
@@ -68,10 +70,14 @@ static void	init(t_game *game)
 {
 	game->textures->ceiling_colour = 0;
 	game->textures->floor_colour = 0;
-	game->textures->n_texture = NULL;
-	game->textures->s_texture = NULL;
-	game->textures->e_texture = NULL;
-	game->textures->w_texture = NULL;
+	game->textures->n_route = NULL;
+	game->textures->s_route = NULL;
+	game->textures->e_route = NULL;
+	game->textures->w_route = NULL;
+	game->textures->n_img.img = NULL;
+	game->textures->s_img.img = NULL;
+	game->textures->e_img.img = NULL;
+	game->textures->w_img.img = NULL;
 	game->map->grid = NULL;
 }
 
@@ -95,15 +101,6 @@ static int	file_has_correct_extension(char *str)
 
 int	parser(const int argc, char **argv, t_game *game)
 {
-	game->textures = malloc(sizeof(t_textures));
-	if (!game->textures)
-		error_during_parse(game, 3);
-	game->map = malloc(sizeof(t_map));
-	if (!game->map)
-	{
-		free(game->textures);
-		error_during_parse(game, 3);
-	}
 	if (argc != 2)
 	{
 		ft_putstr_fd("Error\nIncorrect number of arguments\n", STDERR_FILENO);
@@ -113,6 +110,15 @@ int	parser(const int argc, char **argv, t_game *game)
 	{
 		ft_putstr_fd("Error\nFile has incorrect extension\n", STDERR_FILENO);
 		exit (1);
+	}
+	game->textures = malloc(sizeof(t_textures));
+	if (!game->textures)
+		error_during_parse(game, 3);
+	game->map = malloc(sizeof(t_map));
+	if (!game->map)
+	{
+		free(game->textures);
+		error_during_parse(game, 3);
 	}
 	init(game);
 	if (!parse_cub(game, argv[1]))

@@ -93,14 +93,14 @@ void	get_texture(t_game *game, char *line, int n, int *count)
 		free(line);
 		error_during_parse(game, 9);
 	}
-	if (n == 1 && !game->textures->n_texture)
-		game->textures->n_texture = copy_route(line, m, game);
-	else if (n == 2 && !game->textures->s_texture)
-		game->textures->s_texture = copy_route(line, m, game);
-	else if (n == 3 && !game->textures->e_texture)
-		game->textures->e_texture = copy_route(line, m, game);
-	else if (n == 4 && !game->textures->w_texture)
-		game->textures->w_texture = copy_route(line, m, game);
+	if (n == 1 && !game->textures->n_route)
+		game->textures->n_route = copy_route(line, m, game);
+	else if (n == 2 && !game->textures->s_route)
+		game->textures->s_route = copy_route(line, m, game);
+	else if (n == 3 && !game->textures->e_route)
+		game->textures->e_route = copy_route(line, m, game);
+	else if (n == 4 && !game->textures->w_route)
+		game->textures->w_route = copy_route(line, m, game);
 	else
 	{
 		free(line);

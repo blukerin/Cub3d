@@ -14,18 +14,28 @@
 
 void	free_mem(t_game *game)
 {
-	if (game->textures->e_texture != NULL)
-		free(game->textures->e_texture);
-	if (game->textures->n_texture != NULL)
-		free(game->textures->n_texture);
-	if (game->textures->s_texture != NULL)
-		free(game->textures->s_texture);
-	if (game->textures->w_texture != NULL)
-		free(game->textures->w_texture);
+	if (game->textures->e_route != NULL)
+		free(game->textures->e_route);
+	if (game->textures->n_route != NULL)
+		free(game->textures->n_route);
+	if (game->textures->s_route != NULL)
+		free(game->textures->s_route);
+	if (game->textures->w_route != NULL)
+		free(game->textures->w_route);
 	if (game->map->grid != NULL)
 		free_matrix(game->map->grid);
 	if (game->img.img != NULL)
 		mlx_destroy_image(game->mlx, game->img.img);
-	free(game->map);
-	free(game->textures);
+	if (game->textures->n_img.img != NULL)
+		mlx_destroy_image(game->mlx, game->textures->n_img.img);
+	if (game->textures->s_img.img != NULL)
+		mlx_destroy_image(game->mlx, game->textures->s_img.img);
+	if (game->textures->e_img.img != NULL)
+		mlx_destroy_image(game->mlx, game->textures->e_img.img);
+	if (game->textures->w_img.img != NULL)
+		mlx_destroy_image(game->mlx, game->textures->w_img.img);
+	if (game->map)
+		free(game->map);
+	if (game->textures)
+		free(game->textures);
 }

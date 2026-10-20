@@ -50,14 +50,20 @@ typedef struct s_img
 	int		bpp;
 	int		line_len;
 	int		endian;
+	int		width;
+	int		height;
 }	t_img;
 
 typedef struct s_textures
 {
-	char			*w_texture;
-	char			*e_texture;
-	char			*n_texture;
-	char			*s_texture;
+	char			*n_route;
+	char			*s_route;
+	char			*e_route;
+	char			*w_route;
+	t_img			n_img;
+	t_img			s_img;
+	t_img			e_img;
+	t_img			w_img;
 	unsigned int	floor_colour;
 	unsigned int	ceiling_colour;
 }	t_textures;

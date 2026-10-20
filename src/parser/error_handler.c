@@ -49,14 +49,14 @@ static void	end_file(t_game *game)
 
 void	error_during_parse(t_game *game, int msg)
 {
-	if (game->textures->e_texture != NULL)
-		free(game->textures->e_texture);
-	if (game->textures->n_texture != NULL)
-		free(game->textures->n_texture);
-	if (game->textures->s_texture != NULL)
-		free(game->textures->s_texture);
-	if (game->textures->w_texture != NULL)
-		free(game->textures->w_texture);
+	if (game->textures->e_route != NULL)
+		free(game->textures->e_route);
+	if (game->textures->n_route != NULL)
+		free(game->textures->n_route);
+	if (game->textures->s_route != NULL)
+		free(game->textures->s_route);
+	if (game->textures->w_route != NULL)
+		free(game->textures->w_route);
 	if (game->map->grid != NULL)
 		free_matrix(game->map->grid);
 	if (game->file_d != NULL)
