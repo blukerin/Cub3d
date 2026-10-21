@@ -2,7 +2,7 @@ NAME = cub3D
 BONUS_NAME = cub3D_bonus
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -std=c99
 
 MLX_DIR = mlx
 LIBFT_DIR = includes/libft
@@ -51,7 +51,7 @@ $(BONUS_NAME): $(BONUS_OBJ) $(MLX_LIB) $(LIBFT_LIB)
 	$(CC) $(CFLAGS) $(BONUS_OBJ) $(MLX_FLAGS) $(LIBFT_FLAGS) -lm -o $(BONUS_NAME)
 
 $(MLX_LIB):
-	$(MAKE) -C $(MLX_DIR)
+	$(MAKE) -C $(MLX_DIR) IFLAGS=-std=gnu17 CPPFLAGS=-std=gnu17
 
 $(LIBFT_LIB):
 	$(MAKE) -C $(LIBFT_DIR)
