@@ -14,13 +14,13 @@
 
 t_img	*get_wall_texture(t_game *game, t_ray *ray)
 {
-	if (ray->side == 0 && ray->ray_dir_x > 0)
+	if (ray->side == 0 && ray->ray_dir_x < 0)
 		return (&game->textures->w_img);
-	else if (ray->side == 0 && ray->ray_dir_x < 0)
+	else if (ray->side == 0 && ray->ray_dir_x > 0)
 		return (&game->textures->e_img);
-	else if (ray->side == 1 && ray->ray_dir_y > 0)
-		return (&game->textures->n_img);
 	else if (ray->side == 1 && ray->ray_dir_y < 0)
+		return (&game->textures->n_img);
+	else if (ray->side == 1 && ray->ray_dir_y > 0)
 		return (&game->textures->s_img);
 	return (NULL);
 }

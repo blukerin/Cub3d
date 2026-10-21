@@ -42,27 +42,27 @@ static int	parse_cub(t_game *game, char *file)
 	int		fd;
 	int		count;
 	char	*line;
+	int		bad_map;
 
 	count = 0;
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-	{
-		ft_putstr_fd("Error\nOpening file failed\n", STDERR_FILENO);
-		free(game->map);
-		free(game->textures);
-		return (0);
-	}
+	bad_map = 0;
+	fd = open_map_file(game, file);
 	line = get_next_line(fd);
 	game->file_d = &fd;
 	while (line != NULL)
 	{
-		if (is_not_empty(line, game))
+		if (is_not_empty_2(line))
+		{
+			if (bad_map)
+				count = 7;
 			check_line(game, line, &count);
+		}
+		else if (game->map->grid != NULL)
+			bad_map = 1;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	game->file_d = NULL;
 	return (1);
 }
 
@@ -123,6 +123,7 @@ int	parser(const int argc, char **argv, t_game *game)
 	init(game);
 	if (!parse_cub(game, argv[1]))
 		exit (1);
+	game->file_d = NULL;
 	parse_map(game);
 	return (1);
 }

@@ -27,9 +27,9 @@ static void	print_err_msg(int msg)
 	else if (msg == 6)
 		ft_putstr_fd("Error\nWrong character inside map\n", STDERR_FILENO);
 	else if (msg == 7)
-		ft_putstr_fd("Error\nMap is not closed\n", STDERR_FILENO);
+		ft_putstr_fd("Error\nMap has wrong format\n", STDERR_FILENO);
 	else if (msg == 8)
-		ft_putstr_fd("Error\nMap can only contain one player\n", STDERR_FILENO);
+		ft_putstr_fd("Error\nMap only works with one player\n", STDERR_FILENO);
 	else if (msg == 9)
 		ft_putstr_fd("Error\nIncorrect path to texture\n", STDERR_FILENO);
 }

@@ -31,7 +31,7 @@ SRC = src/main.c\
 	src/parser/create_map.c\
 	src/parser/utils_parser.c\
 	src/parser/map_parser.c\
-	src/parser/str_utils.c
+	src/parser/str_utils.c\
 
 OBJ = $(SRC:.c=.o)
 

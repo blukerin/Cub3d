@@ -12,6 +12,30 @@
 
 #include "../../includes/cub3D.h"
 
+int	open_map_file(t_game *game, char *file)
+{
+	int	fd;
+
+	fd = open(file, O_DIRECTORY);
+	if (fd != -1)
+	{
+		free(game->map);
+		free(game->textures);
+		close(fd);
+		ft_putstr_fd("Error\nArgument is a directory\n", STDERR_FILENO);
+		exit (1);
+	}
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		free(game->map);
+		free(game->textures);
+		ft_putstr_fd("Error\nCannot open file\n", STDERR_FILENO);
+		exit(1);
+	}
+	return (fd);
+}
+
 void	free_matrix(char **arr)
 {
 	int	i;
@@ -25,21 +49,7 @@ void	free_matrix(char **arr)
 	free(arr);
 }
 
-int	map_not_completed(char **grid, int i)
-{
-	int	j;
-
-	j = 0;
-	while (ft_isspace(grid[i][j]))
-		j++;
-	while (grid[i][j] == '1' || ft_isspace(grid[i][j]))
-		j++;
-	if (grid[i][j] != '\0')
-		return (1);
-	return (0);
-}
-
-int	is_not_empty(char *str, t_game *game)
+int	is_not_empty(char *str)
 {
 	int	i;
 
@@ -47,17 +57,7 @@ int	is_not_empty(char *str, t_game *game)
 	while (ft_isspace(str[i]))
 		i++;
 	if (str[i] == '\0')
-	{
-		if (game->map != NULL && game->map->grid != NULL)
-		{
-			if (map_not_completed(game->map->grid, game->map->height - 1))
-			{
-				free(str);
-				error_during_parse(game, 1);
-			}
-		}
 		return (0);
-	}
 	return (1);
 }
 

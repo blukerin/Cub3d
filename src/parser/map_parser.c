@@ -97,6 +97,8 @@ int	parse_map(t_game *game)
 	int		j;
 	int		player;
 
+	if (!game->map->grid || !game->map->grid[0])
+		error_during_parse(game, 7);
 	padding(game);
 	i = 0;
 	player = 0;

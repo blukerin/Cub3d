@@ -124,13 +124,13 @@ void	get_texture(t_game *game, char *line, int n, int *count);
 void	line_to_map(t_game *game, char *line);
 void	error_during_parse(t_game *game, int msg);
 int		count_spaces(const char *line, int i);
-int		is_not_empty(char *str, t_game *game);
+int		is_not_empty(char *str);
 int		parse_map(t_game *game);
 void	free_matrix(char **arr);
 int		ft_isspace(char c);
 int		numbers_not_in_range(int *colours);
-int		map_not_completed(char **grid, int i);
 int		get_max_len(t_game *game);
+int		open_map_file(t_game *game, char *file);
 
 // Init
 void	init_player(t_game *game);
