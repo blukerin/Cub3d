@@ -16,7 +16,7 @@ int	open_map_file(t_game *game, char *file)
 {
 	int	fd;
 
-	fd = open(file, O_DIRECTORY);
+	fd = open(file, __O_DIRECTORY);
 	if (fd != -1)
 	{
 		free(game->map);

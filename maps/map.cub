@@ -1,10 +1,10 @@
-NO ./textures/Brick/Brick01.xpm
-WE ./textures/Tiles/Tiles04.xpm
+NO ./textures/Brick/Brick03.xpm
+WE ./textures/Tiles/Tiles05.xpm
 EA ./textures/Wood/Wood02.xpm
-SO ./textures/Stone/Stone08.xpm
+SO ./textures/Stone/Stone03.xpm
 
+F 89,120,90
 C 50,150,40
-F 10,200,10
 
         1111111111111111111111111
         1000000000110000000000001

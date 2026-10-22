@@ -41,7 +41,8 @@ static int	is_not_numeric(const char *line, int i)
 {
 	while (line[i])
 	{
-		if (line[i] < '0' || line[i] > '9')
+		if ((line[i] < '0' && line[i] != 45)
+			|| (line[i] > '9' && line[i] != 45))
 		{
 			if (line[i] != ',')
 				break ;

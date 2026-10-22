@@ -16,17 +16,17 @@ static int	check_line(t_game *game, char *line, int *count)
 {
 	if (*count == 6)
 		line_to_map(game, line);
-	else if (line[0] == 'N' && line[1] == 'O' && *count != 6)
+	else if (line[0] == 'N' && line[1] == 'O' && *count < 6)
 		get_texture(game, line, 1, count);
-	else if (line[0] == 'S' && line[1] == 'O' && *count != 6)
+	else if (line[0] == 'S' && line[1] == 'O' && *count < 6)
 		get_texture(game, line, 2, count);
-	else if (line[0] == 'E' && line[1] == 'A' && *count != 6)
+	else if (line[0] == 'E' && line[1] == 'A' && *count < 6)
 		get_texture(game, line, 3, count);
-	else if (line[0] == 'W' && line[1] == 'E' && *count != 6)
+	else if (line[0] == 'W' && line[1] == 'E' && *count < 6)
 		get_texture(game, line, 4, count);
-	else if (line[0] == 'F' && *count != 6)
+	else if (line[0] == 'F' && *count < 6)
 		get_colour(game, line, 1, count);
-	else if (line[0] == 'C' && *count != 6)
+	else if (line[0] == 'C' && *count < 6)
 		get_colour(game, line, 2, count);
 	else
 	{
@@ -51,7 +51,7 @@ static int	parse_cub(t_game *game, char *file)
 	game->file_d = &fd;
 	while (line != NULL)
 	{
-		if (is_not_empty_2(line))
+		if (is_not_empty(line))
 		{
 			if (bad_map)
 				count = 7;

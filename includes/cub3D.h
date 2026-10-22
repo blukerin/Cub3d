@@ -23,7 +23,7 @@
 # define WIDTH 600
 # define WIN_W 1024
 # define WIN_H 768
-# define MOVE_SPEED 0.05
+# define MOVE_SPEED 0.04
 # define ROT_SPEED 0.03
 
 # include <math.h>
