@@ -12,18 +12,6 @@
 
 #include "../../includes/cub3D.h"
 
-static void	no_perm_file(t_game *game, int err, char *line)
-{
-	free(line);
-	if (err == 1)
-	{
-		error_during_parse(game, 9);
-	}
-	else if (err == 2)
-	{
-		error_during_parse(game, 10);
-	}
-}
 
 static char	*copy_route(char *line, int m, t_game *game)
 {
@@ -99,14 +87,13 @@ static int	is_not_valid_path(char *line)
 void	get_texture(t_game *game, char *line, int n, int *count)
 {
 	int	m;
-	int	err;
 
 	m = count_spaces(line, 2);
-	err = is_not_valid_path(line + m);
-	if (err == 1)
-		no_perm_file(game, 1, line);
-	else if (err == 2)
-		no_perm_file(game, 2, line);
+	if (is_not_valid_path(line + m))
+	{
+		free(line);
+		error_during_parse(game, 9);
+	}
 	if (n == 1 && !game->textures->n_route)
 		game->textures->n_route = copy_route(line, m, game);
 	else if (n == 2 && !game->textures->s_route)
